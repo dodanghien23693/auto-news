@@ -1,0 +1,154 @@
+E:\projects\auto news\auto news\obj\Debug\auto news.csprojResolveAssemblyReference.cache
+E:\projects\auto news\auto news\bin\roslyn\csc.exe
+E:\projects\auto news\auto news\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+E:\projects\auto news\auto news\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+E:\projects\auto news\auto news\bin\roslyn\Microsoft.CodeAnalysis.dll
+E:\projects\auto news\auto news\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+E:\projects\auto news\auto news\bin\roslyn\Microsoft.CSharp.Core.targets
+E:\projects\auto news\auto news\bin\roslyn\Microsoft.VisualBasic.Core.targets
+E:\projects\auto news\auto news\bin\roslyn\System.Collections.Immutable.dll
+E:\projects\auto news\auto news\bin\roslyn\System.Reflection.Metadata.dll
+E:\projects\auto news\auto news\bin\roslyn\vbc.exe
+E:\projects\auto news\auto news\bin\roslyn\VBCSCompiler.exe
+E:\projects\auto news\auto news\bin\roslyn\VBCSCompiler.exe.config
+E:\projects\auto news\auto news\bin\auto news.dll.config
+E:\projects\auto news\auto news\bin\auto news.dll
+E:\projects\auto news\auto news\bin\auto news.pdb
+E:\projects\auto news\auto news\bin\Antlr3.Runtime.dll
+E:\projects\auto news\auto news\bin\EntityFramework.dll
+E:\projects\auto news\auto news\bin\EntityFramework.SqlServer.dll
+E:\projects\auto news\auto news\bin\Microsoft.AspNet.Identity.Core.dll
+E:\projects\auto news\auto news\bin\Microsoft.AspNet.Identity.EntityFramework.dll
+E:\projects\auto news\auto news\bin\Microsoft.AspNet.Identity.Owin.dll
+E:\projects\auto news\auto news\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+E:\projects\auto news\auto news\bin\Microsoft.Owin.dll
+E:\projects\auto news\auto news\bin\Microsoft.Owin.Host.SystemWeb.dll
+E:\projects\auto news\auto news\bin\Microsoft.Owin.Security.Cookies.dll
+E:\projects\auto news\auto news\bin\Microsoft.Owin.Security.dll
+E:\projects\auto news\auto news\bin\Microsoft.Owin.Security.Facebook.dll
+E:\projects\auto news\auto news\bin\Microsoft.Owin.Security.Google.dll
+E:\projects\auto news\auto news\bin\Microsoft.Owin.Security.MicrosoftAccount.dll
+E:\projects\auto news\auto news\bin\Microsoft.Owin.Security.OAuth.dll
+E:\projects\auto news\auto news\bin\Microsoft.Owin.Security.Twitter.dll
+E:\projects\auto news\auto news\bin\Microsoft.Web.Infrastructure.dll
+E:\projects\auto news\auto news\bin\Newtonsoft.Json.dll
+E:\projects\auto news\auto news\bin\Owin.dll
+E:\projects\auto news\auto news\bin\System.Net.Http.Formatting.dll
+E:\projects\auto news\auto news\bin\System.Web.Helpers.dll
+E:\projects\auto news\auto news\bin\System.Web.Http.dll
+E:\projects\auto news\auto news\bin\System.Web.Http.Owin.dll
+E:\projects\auto news\auto news\bin\System.Web.Http.WebHost.dll
+E:\projects\auto news\auto news\bin\System.Web.Mvc.dll
+E:\projects\auto news\auto news\bin\System.Web.Optimization.dll
+E:\projects\auto news\auto news\bin\System.Web.Razor.dll
+E:\projects\auto news\auto news\bin\System.Web.WebPages.Deployment.dll
+E:\projects\auto news\auto news\bin\System.Web.WebPages.dll
+E:\projects\auto news\auto news\bin\System.Web.WebPages.Razor.dll
+E:\projects\auto news\auto news\bin\WebGrease.dll
+E:\projects\auto news\auto news\bin\Antlr3.Runtime.pdb
+E:\projects\auto news\auto news\bin\EntityFramework.xml
+E:\projects\auto news\auto news\bin\EntityFramework.SqlServer.xml
+E:\projects\auto news\auto news\bin\Microsoft.AspNet.Identity.Core.xml
+E:\projects\auto news\auto news\bin\Microsoft.AspNet.Identity.EntityFramework.xml
+E:\projects\auto news\auto news\bin\Microsoft.AspNet.Identity.Owin.xml
+E:\projects\auto news\auto news\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+E:\projects\auto news\auto news\bin\Microsoft.Owin.xml
+E:\projects\auto news\auto news\bin\Microsoft.Owin.Host.SystemWeb.xml
+E:\projects\auto news\auto news\bin\Microsoft.Owin.Security.xml
+E:\projects\auto news\auto news\bin\Microsoft.Owin.Security.Cookies.xml
+E:\projects\auto news\auto news\bin\Microsoft.Owin.Security.Facebook.xml
+E:\projects\auto news\auto news\bin\Microsoft.Owin.Security.Google.xml
+E:\projects\auto news\auto news\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
+E:\projects\auto news\auto news\bin\Microsoft.Owin.Security.OAuth.xml
+E:\projects\auto news\auto news\bin\Microsoft.Owin.Security.Twitter.xml
+E:\projects\auto news\auto news\bin\Newtonsoft.Json.xml
+E:\projects\auto news\auto news\bin\System.Net.Http.Formatting.xml
+E:\projects\auto news\auto news\bin\System.Web.Helpers.xml
+E:\projects\auto news\auto news\bin\System.Web.Http.xml
+E:\projects\auto news\auto news\bin\System.Web.Http.Owin.xml
+E:\projects\auto news\auto news\bin\System.Web.Http.WebHost.xml
+E:\projects\auto news\auto news\bin\System.Web.Mvc.xml
+E:\projects\auto news\auto news\bin\System.Web.Optimization.xml
+E:\projects\auto news\auto news\bin\System.Web.Razor.xml
+E:\projects\auto news\auto news\bin\System.Web.WebPages.xml
+E:\projects\auto news\auto news\bin\System.Web.WebPages.Deployment.xml
+E:\projects\auto news\auto news\bin\System.Web.WebPages.Razor.xml
+E:\projects\auto news\auto news\obj\Debug\auto news.dll
+E:\projects\auto news\auto news\obj\Debug\auto news.pdb
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\roslyn\csc.exe
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\roslyn\Microsoft.CodeAnalysis.dll
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\roslyn\Microsoft.CSharp.Core.targets
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\roslyn\Microsoft.VisualBasic.Core.targets
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\roslyn\System.Collections.Immutable.dll
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\roslyn\System.Reflection.Metadata.dll
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\roslyn\vbc.exe
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\roslyn\VBCSCompiler.exe
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\roslyn\VBCSCompiler.exe.config
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\auto news.dll.config
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\auto news.dll
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\auto news.pdb
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\Antlr3.Runtime.dll
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\EntityFramework.dll
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\EntityFramework.SqlServer.dll
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\Microsoft.AspNet.Identity.Core.dll
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\Microsoft.AspNet.Identity.EntityFramework.dll
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\Microsoft.AspNet.Identity.Owin.dll
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\Microsoft.Owin.dll
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\Microsoft.Owin.Host.SystemWeb.dll
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\Microsoft.Owin.Security.Cookies.dll
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\Microsoft.Owin.Security.dll
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\Microsoft.Owin.Security.Facebook.dll
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\Microsoft.Owin.Security.Google.dll
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\Microsoft.Owin.Security.MicrosoftAccount.dll
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\Microsoft.Owin.Security.OAuth.dll
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\Microsoft.Owin.Security.Twitter.dll
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\Microsoft.Web.Infrastructure.dll
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\Newtonsoft.Json.dll
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\Owin.dll
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\System.Net.Http.Formatting.dll
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\System.Web.Helpers.dll
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\System.Web.Http.dll
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\System.Web.Http.Owin.dll
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\System.Web.Http.WebHost.dll
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\System.Web.Mvc.dll
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\System.Web.Optimization.dll
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\System.Web.Razor.dll
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\System.Web.WebPages.Deployment.dll
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\System.Web.WebPages.dll
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\System.Web.WebPages.Razor.dll
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\WebGrease.dll
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\Antlr3.Runtime.pdb
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\EntityFramework.xml
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\EntityFramework.SqlServer.xml
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\Microsoft.AspNet.Identity.Core.xml
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\Microsoft.AspNet.Identity.EntityFramework.xml
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\Microsoft.AspNet.Identity.Owin.xml
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\Microsoft.Owin.xml
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\Microsoft.Owin.Host.SystemWeb.xml
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\Microsoft.Owin.Security.xml
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\Microsoft.Owin.Security.Cookies.xml
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\Microsoft.Owin.Security.Facebook.xml
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\Microsoft.Owin.Security.Google.xml
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\Microsoft.Owin.Security.OAuth.xml
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\Microsoft.Owin.Security.Twitter.xml
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\Newtonsoft.Json.xml
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\System.Net.Http.Formatting.xml
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\System.Web.Helpers.xml
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\System.Web.Http.xml
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\System.Web.Http.Owin.xml
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\System.Web.Http.WebHost.xml
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\System.Web.Mvc.xml
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\System.Web.Optimization.xml
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\System.Web.Razor.xml
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\System.Web.WebPages.xml
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\System.Web.WebPages.Deployment.xml
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\System.Web.WebPages.Razor.xml
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\obj\Debug\auto news.csprojResolveAssemblyReference.cache
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\obj\Debug\auto news.dll
+E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\obj\Debug\auto news.pdb
