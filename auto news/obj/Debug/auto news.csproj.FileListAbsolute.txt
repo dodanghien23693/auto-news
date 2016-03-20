@@ -152,3 +152,5 @@ E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\bin\System.Web.WebP
 E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\obj\Debug\auto news.csprojResolveAssemblyReference.cache
 E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\obj\Debug\auto news.dll
 E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\obj\Debug\auto news.pdb
+E:\projects\auto news\auto news\obj\Debug\auto_news.Migrations.initdatabase.resources
+E:\projects\auto news\auto news\obj\Debug\auto news.csproj.GenerateResource.Cache
