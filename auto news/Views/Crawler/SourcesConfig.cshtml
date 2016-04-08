@@ -1,0 +1,53 @@
+﻿
+@section SPAViews {
+
+
+<div id="NewsSourceTable" style="width: 100%; margin: auto;"></div>
+
+
+
+}
+
+
+
+@section Scripts{
+    
+    <link href="~/Scripts/jtable.2.4.0/themes/metro/blue/jtable.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jtable.2.4.0/jquery.jtable.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            
+            $('#NewsSourceTable').jtable({
+                title: 'News Source',
+                actions: {
+                    listAction: '/Crawler/GetAllNewsSource',
+                    createAction: '/Crawler/CreateNewsSource',
+                    updateAction: '/Crawler/UpdateNewsSource',
+                    deleteAction: '/Crawler/DeleteNewsSource'
+                },
+
+                fields: {
+                    Id: {
+                        key: true,
+                        list: false
+                    },
+                    Name: {
+                        title: 'Name',
+                        width: '30%'
+                    },
+
+                    Description: {
+                        title: 'Description',
+                        width: '30%'
+                    }
+                }
+            });
+
+            $('#NewsSourceTable').jtable('load');
+
+    });
+    </script>
+}
+
+
