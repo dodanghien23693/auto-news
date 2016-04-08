@@ -1,4 +1,3 @@
-E:\projects\auto news\auto news\obj\Debug\auto news.csprojResolveAssemblyReference.cache
 E:\projects\auto news\auto news\bin\roslyn\csc.exe
 E:\projects\auto news\auto news\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
 E:\projects\auto news\auto news\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
@@ -154,3 +153,4 @@ E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\obj\Debug\auto news
 E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\obj\Debug\auto news.pdb
 E:\projects\auto news\auto news\obj\Debug\auto_news.Migrations.initdatabase.resources
 E:\projects\auto news\auto news\obj\Debug\auto news.csproj.GenerateResource.Cache
+E:\projects\auto news\auto news\obj\Debug\auto news.csprojResolveAssemblyReference.cache
