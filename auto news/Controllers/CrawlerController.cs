@@ -89,7 +89,7 @@ namespace auto_news.Controllers
         }
 
 
-        public ActionResult CrawlPageConfig()
+        public ActionResult PageCrawlConfig()
         {
             return View();
         }

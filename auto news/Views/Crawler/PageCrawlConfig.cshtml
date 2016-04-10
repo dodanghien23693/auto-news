@@ -1,0 +1,187 @@
+﻿
+@section SPAViews {
+
+   <form class="form-horizontal" role="form">
+       <fieldset>
+           <legend>Cấu hình chung</legend>
+
+           <div class="form-group">
+               <label class="col-sm-3 control-label">News Source</label>
+               <div class="col-sm-9">
+                   <select class="form-control" name="NewsSource">
+                       <option value="0">Single Url</option>
+                       <option value="1">List Url</option>
+                       <option value="2">Generate Url</option>
+                       <option value="3">From Api</option>
+                   </select>
+               </div>
+           </div>
+
+           <div class="form-group">
+               <label class="col-sm-3 control-label">Category</label>
+               <div class="col-sm-9">
+                   <select class="form-control" name="Category">
+                       
+                   </select>
+               </div>
+           </div>
+
+           
+           <div class="form-group">
+               
+               <label class="col-sm-3 control-label" for="method">Method</label>
+               <div class="col-sm-9">
+                   <select class="form-control" name="crawlMethod" id="method">
+                       <option value="0">Single Url</option>
+                       <option value="1">List Url</option>
+                       <option value="2">Generate Url</option>
+                       <option value="3">From Api</option>
+                   </select>
+               </div>
+           </div>
+           
+           <div id="methodDescription">
+               <div method-id="0">
+                   <div class="form-group">
+                       <label class="col-sm-3 control-label">Url</label>
+                       <div class="col-sm-9">
+                           <input class="form-control" type="url" />
+                       </div>
+                   </div>
+               </div>
+
+               <div method-id="1">
+                   <div class="form-group">
+                       <label class="col-sm-3 control-label">List Url</label>
+                       <div class="col-sm-9">
+                           <textarea class="form-control"></textarea>
+                       </div>
+                   </div>
+               </div>
+
+               <div method-id="2">
+                   <div class="btn btn-success form-group" id="add-param">Add Param</div><br /><br />
+                   
+                   <div class="form-group hidden" id="ParamItemTemplate">
+                       <div class="btn btn-danger col-sm-1 remove-param" >X</div>
+                       <label class="col-sm-1 control-label">Type</label>
+                       <div class="col-sm-3">
+                           <select class="form-control" name="paramType">
+                               <option value="0">Fix</option>
+                               <option value="1">Range</option>
+                               <option value="2">List Value</option>
+                           </select>
+                       </div>
+
+                       <div id="paramDescription">
+                           <div paramType-id="0">
+                               <label class="control-label col-sm-1">Value</label> 
+                               <div class="col-sm-3">
+                                   <input class="form-control" type="text" />
+                               </div>
+                           </div>
+
+                           <div paramType-id="1">
+                               <label class="control-label col-sm-1">From</label>
+                               <div class="col-sm-2">
+                                   <input class="form-control" type="text" />
+                               </div>
+                               <label class="control-label col-sm-1">To</label>
+                               <div class="col-sm-2">
+                                   <input class="form-control" type="text" />
+                               </div>
+                           </div>
+
+                           <div paramType-id="2">
+                               <label class="control-label col-sm-1">List Value</label>
+                               <div class="col-sm-4">
+                                   <textarea class="form-control" ></textarea>
+                               </div>
+                           </div>
+
+                       </div>
+
+
+                   </div>
+              
+               </div>
+           </div>
+
+
+        </fieldset>
+
+           <fieldset>
+               <legend>Trích lọc thông tin</legend>
+               <div class="form-group">
+                   <label class="col-sm-3 control-label">Title</label>
+                   <div class="col-sm-9">
+                       <input class="form-control" type="text" name="title" />
+                   </div>
+               </div>
+
+               <div class="form-group">
+                   <label class="col-sm-3 control-label">Description</label>
+                   <div class="col-sm-9">
+                       <input class="form-control" type="text" name="Description" />
+                   </div>
+               </div>
+
+               <div class="form-group">
+                   <label class="col-sm-3 control-label">ImageUrl</label>
+                   <div class="col-sm-9">
+                       <input class="form-control" type="text" name="ImageUrl" />
+                   </div>
+               </div>
+
+               <div class="form-group">
+                   <label class="col-sm-3 control-label">Content</label>
+                   <div class="col-sm-9">
+                       <input class="form-control" type="text" name="Content" />
+                   </div>
+               </div>
+           </fieldset>
+</form>
+
+}
+
+
+
+@section Scripts{
+    <script>
+        
+        $(document).ready(function () {
+
+            $("select[name='crawlMethod']").change(function () {
+                var methodId = $(this).val();
+                
+                $("#methodDescription>div").hide();
+                $("#methodDescription div[method-id='"+methodId+"']").show();
+            });
+
+            $("select[name='crawlMethod']").trigger("change");
+
+            $("#add-param").click(function () {
+                var e = $("#ParamItemTemplate").clone().removeClass("hidden");
+                $(e).appendTo("div[method-id='2']");
+                registerParamEvent(e);
+            });
+
+
+        });
+
+        function registerParamEvent(e) {
+            $(e).find(".remove-param").click(function () {
+                $(this).closest(".form-group").remove();
+            });
+
+            $(e).find("select[name='paramType']").change(function () {
+                var methodId = $(this).val();
+                $(this).closest(".form-group").find("#paramDescription>div").hide();
+                $(this).closest(".form-group").find("#paramDescription div[paramType-id='" + methodId + "']").show();
+            });
+
+            $(e).find("select[name='paramType']").trigger("change");
+
+        }
+    </script>
+}

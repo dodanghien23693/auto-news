@@ -475,7 +475,7 @@
     <Content Include="Views\Crawler\_CrawlerMenu.cshtml" />
     <Content Include="Views\Crawler\SchedulesConfig.cshtml" />
     <Content Include="Content\json\sources.json" />
-    <Content Include="Views\Crawler\CrawlPageConfig.cshtml" />
+    <Content Include="Views\Crawler\PageCrawlConfig.cshtml" />
     <Content Include="Scripts\jtable.2.4.0\themes\basic\jtable_basic.less" />
     <Content Include="Scripts\jtable.2.4.0\themes\jqueryui\jtable_jqueryui.less" />
     <Content Include="Scripts\jtable.2.4.0\themes\jtable_theme_base.less" />
