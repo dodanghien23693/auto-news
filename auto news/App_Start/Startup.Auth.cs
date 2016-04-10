@@ -37,6 +37,7 @@ namespace auto_news
         // For more information on configuring authentication, please visit http://go.microsoft.com/fwlink/?LinkId=301864
         public void ConfigureAuth(IAppBuilder app)
         {
+            
             // Configure the db context, user manager and signin manager to use a single instance per request
             app.CreatePerOwinContext(ApplicationDbContext.Create);
             app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
@@ -81,13 +82,18 @@ namespace auto_news
 
             app.UseFacebookAuthentication(
                 appId: "799719793397460",
-                appSecret: "9a497d4f257274debc700e8c033843c4");
+                appSecret: "9a497d4f257274debc700e8c033843c4"
+                );
+
 
             app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             {
-                ClientId = "564058808839-kbitmh9nkvu6k06f5jm98e2usrtjre4b.apps.googleusercontent.com",
-                ClientSecret = "Sc3dr11VeWIw81x-E-EczrBw"
+                ClientId = "524687792484-ibli30f0gbggi5anllqirfike32mqusl.apps.googleusercontent.com",
+                ClientSecret = "6O6TRq6sLnNS8p8pWN8A5_Nx"
             });
+
+            
         }
+
     }
 }

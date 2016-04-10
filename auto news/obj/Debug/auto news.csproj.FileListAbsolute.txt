@@ -154,3 +154,9 @@ E:\OneDrive\Do an tot nghiep\source code\auto news\auto news\obj\Debug\auto news
 E:\projects\auto news\auto news\obj\Debug\auto_news.Migrations.initdatabase.resources
 E:\projects\auto news\auto news\obj\Debug\auto news.csproj.GenerateResource.Cache
 E:\projects\auto news\auto news\obj\Debug\auto news.csprojResolveAssemblyReference.cache
+E:\projects\auto news\auto news\bin\Hangfire.Core.dll
+E:\projects\auto news\auto news\bin\Hangfire.SqlServer.dll
+E:\projects\auto news\auto news\bin\Hangfire.Core.xml
+E:\projects\auto news\auto news\bin\Hangfire.SqlServer.xml
+E:\projects\auto news\auto news\bin\Hangfire.Dashboard.Authorization.dll
+E:\projects\auto news\auto news\bin\Hangfire.Dashboard.Authorization.xml
