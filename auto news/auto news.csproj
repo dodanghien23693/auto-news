@@ -318,6 +318,8 @@
     <Content Include="Scripts\jquery-ui-1.11.4\jquery-ui.structure.min.css" />
     <Content Include="Scripts\jquery-ui-1.11.4\jquery-ui.theme.css" />
     <Content Include="Scripts\jquery-ui-1.11.4\jquery-ui.theme.min.css" />
+    <Content Include="Scripts\JsonEditor\jsoneditor.js" />
+    <Content Include="Scripts\JsonEditor\jsoneditor.min.js" />
     <Content Include="Scripts\jtable.2.4.0\extensions\jquery.jtable.aspnetpagemethods.js" />
     <Content Include="Scripts\jtable.2.4.0\extensions\jquery.jtable.aspnetpagemethods.min.js" />
     <Content Include="Scripts\jtable.2.4.0\external\json2.js" />
@@ -508,6 +510,7 @@
     <Content Include="Scripts\jtable.2.4.0\themes\metro\pink\jtable.less" />
     <Content Include="Scripts\jtable.2.4.0\themes\metro\purple\jtable.less" />
     <Content Include="Scripts\jtable.2.4.0\themes\metro\red\jtable.less" />
+    <Content Include="Views\Crawler\CategoriesConfig.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -5,11 +5,17 @@ using System.Web.Mvc;
 
 namespace auto_news.Controllers
 {
-    [Authorize]
     public class HomeController : Controller
     {
         public ActionResult Index()
         {
+            //var ran = new Random();
+
+            //if(Session["loginId"]== null)
+            //{
+            //    Session["loginId"] = "hien";
+            //}
+            
             return View();
         }
     }
