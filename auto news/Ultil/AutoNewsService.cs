@@ -27,7 +27,10 @@ namespace auto_news.Ultil
                 //dynamic description = JsonConvert.DeserializeObject(configObject.Description);
                 string url = configObject.Method.Description.Url;
                 var article = Crawler.DoCrawlSingleUrl(url, configObject.CrawlPageConfig);
-                AddArticle(article, configObject, new LinkConfig() { Url = url, CategoryId = configObject.CategoryId });
+                if (article != null)
+                {
+                    AddArticle(article, configObject, new LinkConfig() { Url = url, CategoryId = configObject.CategoryId });
+                }
             }
             else if (configObject.Method.MethodId == CrawlMethodId.MultiUrl)
             {
@@ -40,7 +43,11 @@ namespace auto_news.Ultil
                     else
                     {
                         var article = Crawler.DoCrawlSingleUrl(url, configObject.CrawlPageConfig);
-                        AddArticle(article, configObject, new LinkConfig() { Url = url, CategoryId = configObject.CategoryId });
+                        if (article != null)
+                        {
+                            AddArticle(article, configObject, new LinkConfig() { Url = url, CategoryId = configObject.CategoryId });
+                        }
+                        
                     }
                 }
                 //var articles = Crawler.DoCrawlMultiUrl(urls.Select(i => (string)i).ToArray(), configObject.CrawlPageConfig);
@@ -57,9 +64,10 @@ namespace auto_news.Ultil
                 List<LinkConfig> crawledLinks = new List<LinkConfig>();
 
                 var i = 0;
-                var HasNewArticle = true;
-                while (HasNewArticle && i < links.Count)
+                
+                while (i < links.Count)
                 {
+                    var HasNewArticle = true;
                     var link = links[i];
                     List<string> urls = Crawler.CrawlLinkFromUrl(link.Url, configObject.Method.Description.CrawlLinkConfig.ToObject<CrawlLinkConfig>());
                     var j = 0;
@@ -74,7 +82,10 @@ namespace auto_news.Ultil
                         else
                         {
                             var article = Crawler.DoCrawlSingleUrl(link.Url, configObject.CrawlPageConfig);
-                            AddArticle(article, configObject, link);
+                            if (article != null)
+                            {
+                                AddArticle(article, configObject, link);
+                            }
                         }
                         j++;
                     }
@@ -85,21 +96,28 @@ namespace auto_news.Ultil
 
         public void AddArticle(CrawlArticle article, CrawlConfigJson config, LinkConfig link)
         {
-            AutoNewsDb.Articles.Add(new Article()
+            try
             {
-                CrawlConfigId = config.Id,
-                NewsSourceId = config.NewsSourceId,
-                Title = article.Title,
-                ImageUrl = article.ImageUrl,
-                RawContent = article.Content,
-                CategoryId = link.CategoryId,
-                OriginUrl = link.Url,
-                CreateTime = DateTime.Now,
-                Category = AutoNewsDb.Categories.FirstOrDefault(c => c.Id == link.CategoryId),
-                NewsSource = AutoNewsDb.NewsSources.FirstOrDefault(n => n.Id == config.NewsSourceId)
-            });
+                AutoNewsDb.Articles.Add(new Article()
+                {
+                    CrawlConfigId = config.Id,
+                    NewsSourceId = config.NewsSourceId,
+                    Title = article.Title,
+                    ImageUrl = article.ImageUrl,
+                    RawContent = article.Content,
+                    CategoryId = link.CategoryId,
+                    OriginUrl = link.Url,
+                    CreateTime = DateTime.Now,
+                    Category = AutoNewsDb.Categories.FirstOrDefault(c => c.Id == link.CategoryId),
+                    NewsSource = AutoNewsDb.NewsSources.FirstOrDefault(n => n.Id == config.NewsSourceId)
+                });
 
-            AutoNewsDb.SaveChanges();
+                AutoNewsDb.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                MvcApplication.log.Error("Add Article Error", ex);
+            }
 
         }
         private bool IsCrawled(string url, CrawlConfigJson configObject)

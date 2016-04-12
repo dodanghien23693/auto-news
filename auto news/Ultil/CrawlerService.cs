@@ -1,4 +1,5 @@
 ﻿using AngleSharp.Parser.Html;
+using auto_news;
 using auto_news.Ultil;
 using Crawl_Config;
 using System;
@@ -10,6 +11,8 @@ namespace Crawl_News_Module
 {
     public class CrawlerService
     {
+        public object MVCAppllication { get; private set; }
+
         public List<string> CrawlLinkFromUrl(string url, CrawlLinkConfig config)
         {
             var parser = new HtmlParser();
@@ -19,7 +22,7 @@ namespace Crawl_News_Module
             List<string> urls = new List<string>();
             foreach (var link in links)
             {
-                urls.Add(link.GetAttribute("href"));
+                urls.Add(link.GetAttribute(config.Attribute));
             }
 
             return urls;
@@ -69,53 +72,49 @@ namespace Crawl_News_Module
 
         }
 
-        public List<CrawlArticle> DoCrawlMultiUrl(string[] urls, CrawlPageConfig crawlPageConfig)
-        {
-            List<CrawlArticle> articles = new List<CrawlArticle>();
-            for (var i = 0; i < urls.Length; i++)
-            {
-                articles.Add(DoCrawlSingleUrl(urls[i], crawlPageConfig));
-            }
-            return articles;
-        }
-
         public CrawlArticle DoCrawlSingleUrl(string url, CrawlPageConfig crawlPageConfig)
         {
-            var parser = new HtmlParser();
-            var document = parser.Parse(GetHtmlFromUrl(url));
-            var title = document.QuerySelector(crawlPageConfig.Title).TextContent;
-
-            var contents = "";
-            string imageUrl = "";
-            foreach (var contentQuery in crawlPageConfig.Contents)
+            try
             {
-                var rawContent = document.QuerySelector(contentQuery.Query);
-                if (contentQuery.Excludes != null)
-                {
-                    foreach (var e in contentQuery.Excludes.Split(','))
-                    {
+                var parser = new HtmlParser();
+                var document = parser.Parse(GetHtmlFromUrl(url));
+                var title = document.QuerySelector(crawlPageConfig.Title).TextContent;
 
-                        foreach (var child in rawContent.QuerySelectorAll(e))
+                var contents = "";
+                string imageUrl = "";
+                foreach (var contentQuery in crawlPageConfig.Contents)
+                {
+                    var rawContent = document.QuerySelector(contentQuery.Query);
+                    if (contentQuery.Excludes != null && contentQuery.Excludes != "")
+                    {
+                        foreach (var e in contentQuery.Excludes.Split(','))
                         {
-                            child.Remove();
+
+                            foreach (var child in rawContent.QuerySelectorAll(e))
+                            {
+                                child.Remove();
+                            }
                         }
                     }
-                }
 
-                contents += rawContent.InnerHtml;
-                if (imageUrl == "")
-                {
-                    if (rawContent.QuerySelector("img") != null)
+                    contents += rawContent.InnerHtml;
+                    if (imageUrl == "")
                     {
-                        imageUrl = rawContent.QuerySelector("img").GetAttribute("src");
+                        if (rawContent.QuerySelector("img") != null)
+                        {
+                            imageUrl = rawContent.QuerySelector("img").GetAttribute("src");
+                        }
                     }
+
                 }
 
+                return new CrawlArticle() { Content = contents, Title = title, ImageUrl = imageUrl };
             }
-
-            //var imageUrl = parser.Parse(contents).QuerySelector("img").GetAttribute("src");
-
-            return new CrawlArticle() { Content = contents, Title = title, ImageUrl = imageUrl };
+            catch(Exception ex)
+            {
+                MvcApplication.log.Error("Crawl Single Url Error", ex);
+            }
+            return null;
 
         }
 

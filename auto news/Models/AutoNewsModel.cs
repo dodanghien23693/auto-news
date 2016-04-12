@@ -26,15 +26,15 @@ namespace auto_news.Models
         {
             modelBuilder.Entity<Article>()
                 .Property(e => e.ImageUrl)
-                .IsUnicode(false);
+                .IsUnicode(true);
 
             modelBuilder.Entity<Article>()
                 .Property(e => e.RawContent)
-                .IsUnicode(false);
+                .IsUnicode(true);
 
             modelBuilder.Entity<Article>()
                 .Property(e => e.FormatedContent)
-                .IsUnicode(false);
+                .IsUnicode(true);
 
             modelBuilder.Entity<AspNetRole>()
                 .HasMany(e => e.AspNetUsers)
@@ -48,7 +48,7 @@ namespace auto_news.Models
 
             modelBuilder.Entity<CrawlConfig>()
                 .Property(e => e.Description)
-                .IsUnicode(false);
+                .IsUnicode(true);
 
 
             modelBuilder.Entity<CrawlConfig>()
@@ -58,7 +58,7 @@ namespace auto_news.Models
 
             modelBuilder.Entity<NewsRaw>()
                 .Property(e => e.ObjectData)
-                .IsUnicode(false);
+                .IsUnicode(true);
 
             modelBuilder.Entity<NewsSource>()
                 .HasMany(e => e.Articles)

@@ -9,6 +9,7 @@ namespace Crawl_Config
     public class CrawlLinkConfig
     {
         public string LinkQuery { get; set; }
+        public string Attribute { get; set; }
     }
     public class LinkConfig
     {

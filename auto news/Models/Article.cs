@@ -24,10 +24,8 @@ namespace auto_news.Models
         [StringLength(500)]
         public string ImageUrl { get; set; }
 
-        [Column(TypeName = "text")]
         public string RawContent { get; set; }
 
-        [Column(TypeName = "text")]
         public string FormatedContent { get; set; }
 
         public int CategoryId { get; set; }

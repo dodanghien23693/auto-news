@@ -174,13 +174,11 @@ namespace auto_news.Controllers
             return View();
         }
 
-        [AllowAnonymous]
+
         public ActionResult ScheduleJob()
         {
-
             MvcApplication.AutoNewsServiceInstance.ScheduleJob();
-            return Json(new { status = "Ok" }, JsonRequestBehavior.AllowGet);
-            
+            return Json(new { status = "Ok" }, JsonRequestBehavior.AllowGet);   
         }
 
 
