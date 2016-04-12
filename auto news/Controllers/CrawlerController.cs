@@ -18,20 +18,13 @@ namespace auto_news.Controllers
 
 
         #region News Sources CRUD
-        public ActionResult GetAllSources()
-        {
-            
-            var sources = _db.NewsSources.Select(i => i).ToList();
-
-            return Json(new { data = sources },JsonRequestBehavior.AllowGet);
-        }
 
         [HttpPost]
         public JsonResult GetAllNewsSource()
         {
             try
             {
-                var sources = _db.NewsSources.Select(i => i).ToList();
+                var sources = _db.NewsSources.Select(i => new { Id = i.Id, Name = i.Name, Description = i.Description }).ToList();
                 return Json(new { Result = "OK", Records = sources });
             }
             catch (Exception ex)
@@ -91,16 +84,16 @@ namespace auto_news.Controllers
 
         #region Category CRUD
 
-        [HttpPost]
         public JsonResult GetAllCategory()
         {
             try
             {
-                var sources = _db.Categories.Select(i => i).ToList();
-                return Json(new { Result = "OK", Records = sources });
+                var sources = _db.Categories.Select(i => new { Id = i.Id, Name = i.Name, Description = i.Description }).ToList();
+                return Json(new { Result = "OK", Records = sources }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
+                
                 return Json(new { Result = "ERROR", Message = ex.Message });
             }
         }

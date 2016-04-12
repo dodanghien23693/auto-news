@@ -163,20 +163,4 @@ E:\projects\auto news\auto news\bin\AngleSharp.dll
 E:\projects\auto news\auto news\bin\AngleSharp.xml
 E:\projects\auto news\auto news\bin\log4net.dll
 E:\projects\auto news\auto news\bin\log4net.xml
-E:\projects\auto news\auto news\bin\ApplicationInsights.config
-E:\projects\auto news\auto news\bin\Microsoft.AI.Agent.Intercept.dll
-E:\projects\auto news\auto news\bin\Microsoft.AI.DependencyCollector.dll
-E:\projects\auto news\auto news\bin\Microsoft.AI.PerfCounterCollector.dll
-E:\projects\auto news\auto news\bin\Microsoft.AI.ServerTelemetryChannel.dll
-E:\projects\auto news\auto news\bin\Microsoft.AI.Web.dll
-E:\projects\auto news\auto news\bin\Microsoft.AI.WindowsServer.dll
-E:\projects\auto news\auto news\bin\Microsoft.ApplicationInsights.dll
-E:\projects\auto news\auto news\bin\Microsoft.ApplicationInsights.Log4NetAppender.dll
-E:\projects\auto news\auto news\bin\Microsoft.AI.DependencyCollector.xml
-E:\projects\auto news\auto news\bin\Microsoft.AI.ServerTelemetryChannel.xml
-E:\projects\auto news\auto news\bin\Microsoft.AI.Web.xml
-E:\projects\auto news\auto news\bin\Microsoft.AI.WindowsServer.xml
-E:\projects\auto news\auto news\bin\Microsoft.ApplicationInsights.xml
-E:\projects\auto news\auto news\bin\Microsoft.ApplicationInsights.Log4NetAppender.xml
-E:\projects\auto news\auto news\bin\Microsoft.ApplicationInsights.TraceListener.dll
-E:\projects\auto news\auto news\bin\Microsoft.ApplicationInsights.TraceListener.xml
+E:\projects\auto news\auto news\obj\Debug\auto news.csprojResolveAssemblyReference.cache
