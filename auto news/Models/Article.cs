@@ -8,7 +8,7 @@ namespace auto_news.Models
 
     public partial class Article
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         public int NewsSourceId { get; set; }
@@ -34,8 +34,8 @@ namespace auto_news.Models
 
         public int? CrawlConfigId { get; set; }
 
-        [MaxLength(500)]
-        public byte[] OriginUrl { get; set; }
+        [StringLength(500)]
+        public string OriginUrl { get; set; }
 
         public virtual Category Category { get; set; }
 

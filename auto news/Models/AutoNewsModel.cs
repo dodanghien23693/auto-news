@@ -47,28 +47,9 @@ namespace auto_news.Models
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<CrawlConfig>()
-                .Property(e => e.Title)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<CrawlConfig>()
                 .Property(e => e.Description)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<CrawlConfig>()
-                .Property(e => e.ImageUrl)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<CrawlConfig>()
-                .Property(e => e.CategoryName)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<CrawlConfig>()
-                .Property(e => e.Content)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<CrawlConfig>()
-                .Property(e => e.FormatObjectDescription)
-                .IsUnicode(false);
 
             modelBuilder.Entity<CrawlConfig>()
                 .HasMany(e => e.CrawlSchedules)

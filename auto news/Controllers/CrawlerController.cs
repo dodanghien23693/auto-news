@@ -1,7 +1,6 @@
 ﻿using auto_news.Models;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
@@ -157,9 +156,16 @@ namespace auto_news.Controllers
 
         public ActionResult PageCrawlConfig()
         {
+            //var config = _db.CrawlConfigs.Find(Id);
+
             var categories = _db.Categories.Select(i => i).OrderBy(i=>i.Id);
             ViewBag.CategoriesId = JsonConvert.SerializeObject(categories.Select(i => i.Id).ToArray());
             ViewBag.CategoriesName = JsonConvert.SerializeObject(categories.Select(i => i.Name).ToArray());
+
+            var newsSources = _db.NewsSources.Select(i => i).OrderBy(i => i.Id);
+
+            ViewBag.NewsSourceIds = JsonConvert.SerializeObject(newsSources.Select(i => i.Id).ToArray());
+            ViewBag.NewsSourceNames = JsonConvert.SerializeObject(newsSources.Select(i => i.Name).ToArray());
             return View();
         }
 
@@ -167,6 +173,16 @@ namespace auto_news.Controllers
         {
             return View();
         }
+
+        [AllowAnonymous]
+        public ActionResult ScheduleJob()
+        {
+
+            MvcApplication.AutoNewsServiceInstance.ScheduleJob();
+            return Json(new { status = "Ok" }, JsonRequestBehavior.AllowGet);
+            
+        }
+
 
     }
 }

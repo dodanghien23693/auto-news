@@ -34,6 +34,7 @@ namespace auto_news
 
             app.UseHangfireServer();
             //End Hagefire configuration
+
         }
     }
 

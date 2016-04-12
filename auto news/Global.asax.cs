@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using auto_news.Ultil;
+using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -16,5 +17,10 @@ namespace auto_news
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
+
+        public static AutoNewsService AutoNewsServiceInstance = new AutoNewsService();
     }
+
+   
+
 }
