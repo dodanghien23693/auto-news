@@ -21,11 +21,56 @@
                     updateAction: '/Crawler/UpdateNewsSource',
                     deleteAction: '/Crawler/DeleteNewsSource'
                 },
-
+                multiSorting: true,
                 fields: {
                     Id: {
+                        title:"Id",
                         key: true,
-                        list: false
+
+                    },
+                    CrawlConfigs: {
+                        create: false,
+                        edit: false,
+                        title:'Crawl Configs',
+                        width: "20%",
+                        display: function(sourceData){
+                            var $img = $('<img width="30px" src="https://cdn0.iconfinder.com/data/icons/gray-business-toolbar/512/repair-3-512.png" title="Edit Crawl Configs" />');
+                            $img.click(function(){
+                                $('#NewsSourceTable').jtable('openChildTable',
+                                    $img.closest('tr'),
+                                    {
+                                        title:sourceData.record.Name,
+                                        actions:{
+                                            listAction: '/crawler/CrawlConfigList?sourceId=' + sourceData.record.Id,
+                                            deleteAction: '/crawler/DeleteCrawlConfig',
+                                            updateAction: '/crawler/UpdateCrawlConfig',
+                                            createAction: '/crawler/CreateCrawlConfig'
+                                        },
+                                        fields:{
+                                            NewsSourceId:{
+                                                type:'hidden',
+                                                defaultValue: sourceData.record.Id
+                                            },
+                                            Id: {
+                                                title:"Id",
+                                                key:true
+                                            },
+                                            IsScheduled:{
+                                                title: 'Is Scheduled',
+                                                type: 'checkbox',
+                                                values: { 'false': 'False', 'true': 'True' },
+                                                defaultValue:'false'
+                                            },
+                                            Description:{
+                                                title:'Description'
+                                            }
+                                        }
+                                    },function(data){
+                                        data.childTable.jtable('load');
+                                    });
+                            });
+                            return $img;
+                        }
                     },
                     Name: {
                         title: 'Name',

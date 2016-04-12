@@ -147,19 +147,92 @@ namespace auto_news.Controllers
         }
         #endregion Category CRUD
 
-        public ActionResult PageCrawlConfig()
+
+        #region CrawlConfig CRUD
+        [HttpPost]
+        public JsonResult CrawlConfigList(int sourceId)
         {
-            //var config = _db.CrawlConfigs.Find(Id);
+            try
+            {
+                var crawlConfigs = _db.CrawlConfigs.Where(c=>c.NewsSourceId==sourceId);
+                return Json(new { Result = "OK", Records = crawlConfigs });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = "ERROR", Message = ex.Message });
+            }
+        }
 
-            var categories = _db.Categories.Select(i => i).OrderBy(i=>i.Id);
-            ViewBag.CategoriesId = JsonConvert.SerializeObject(categories.Select(i => i.Id).ToArray());
-            ViewBag.CategoriesName = JsonConvert.SerializeObject(categories.Select(i => i.Name).ToArray());
+        [HttpPost]
+        public JsonResult DeleteCrawlConfig(int id)
+        {
+            try
+            {
+                _db.CrawlConfigs.Remove(_db.CrawlConfigs.Find(id));
+                _db.SaveChanges();
+                return Json(new { Result = "OK" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = "ERROR", Message = ex.Message });
+            }
+        }
 
-            var newsSources = _db.NewsSources.Select(i => i).OrderBy(i => i.Id);
+        [HttpPost]
+        public JsonResult UpdateCrawlConfig(CrawlConfig crawlConfig)
+        {
+            try
+            {
+                _db.Entry(crawlConfig).State = EntityState.Modified;
+                _db.SaveChanges();
+                return Json(new { Result = "OK" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = "ERROR", Message = ex.Message });
+            }
+        }
 
-            ViewBag.NewsSourceIds = JsonConvert.SerializeObject(newsSources.Select(i => i.Id).ToArray());
-            ViewBag.NewsSourceNames = JsonConvert.SerializeObject(newsSources.Select(i => i.Name).ToArray());
-            return View();
+        [HttpPost]
+        public JsonResult CreateCrawlConfig(CrawlConfig crawlConfig)
+        {
+            try
+            {
+
+                var c = _db.CrawlConfigs.Add(crawlConfig);
+                _db.SaveChanges();
+                return Json(new { Result = "OK", Record = c });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = "ERROR", Message = ex.Message });
+            }
+        }
+
+        #endregion CrawlConfig CRUD
+        public ActionResult PageCrawlConfig(int id)
+        {
+            
+            try
+            {
+                var config = _db.CrawlConfigs.Find(id);
+
+                var categories = _db.Categories.Select(i => i).OrderBy(i => i.Id);
+                ViewBag.CategoriesId = JsonConvert.SerializeObject(categories.Select(i => i.Id).ToArray());
+                ViewBag.CategoriesName = JsonConvert.SerializeObject(categories.Select(i => i.Name).ToArray());
+
+                var newsSources = _db.NewsSources.Select(i => i).OrderBy(i => i.Id);
+
+                ViewBag.NewsSourceIds = JsonConvert.SerializeObject(newsSources.Select(i => i.Id).ToArray());
+                ViewBag.NewsSourceNames = JsonConvert.SerializeObject(newsSources.Select(i => i.Name).ToArray());
+
+                return View(config);
+            }
+            catch(Exception ex)
+            {
+                return Json(new { Result = "ERROR", Message = ex.Message });
+            }
+            
         }
 
         public ActionResult CategoriesConfig()

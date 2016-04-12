@@ -17,8 +17,6 @@ namespace auto_news.Models
         public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<CrawlConfig> CrawlConfigs { get; set; }
-        public virtual DbSet<CrawlSchedule> CrawlSchedules { get; set; }
-        public virtual DbSet<NewsRaw> NewsRaws { get; set; }
         public virtual DbSet<NewsSource> NewsSources { get; set; }
         public virtual DbSet<UserSourceConfig> UserSourceConfigs { get; set; }
 
@@ -48,16 +46,6 @@ namespace auto_news.Models
 
             modelBuilder.Entity<CrawlConfig>()
                 .Property(e => e.Description)
-                .IsUnicode(true);
-
-
-            modelBuilder.Entity<CrawlConfig>()
-                .HasMany(e => e.CrawlSchedules)
-                .WithMany(e => e.CrawlConfigs)
-                .Map(m => m.ToTable("CrawlConfigSchedule").MapLeftKey("ConfigId").MapRightKey("ScheduleId"));
-
-            modelBuilder.Entity<NewsRaw>()
-                .Property(e => e.ObjectData)
                 .IsUnicode(true);
 
             modelBuilder.Entity<NewsSource>()

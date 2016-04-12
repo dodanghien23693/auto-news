@@ -255,11 +255,9 @@
     <Compile Include="Models\AutoNewsModel.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\CrawlConfig.cs" />
-    <Compile Include="Models\CrawlSchedule.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MeViewModels.cs" />
-    <Compile Include="Models\NewsRaw.cs" />
     <Compile Include="Models\NewsSource.cs" />
     <Compile Include="Models\UserSourceConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

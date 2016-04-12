@@ -11,7 +11,6 @@ namespace auto_news.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public CrawlConfig()
         {
-            CrawlSchedules = new HashSet<CrawlSchedule>();
         }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -25,7 +24,6 @@ namespace auto_news.Models
 
         public bool IsScheduled { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CrawlSchedule> CrawlSchedules { get; set; }
+
     }
 }
