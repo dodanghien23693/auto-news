@@ -17,32 +17,30 @@ using System.Linq.Dynamic;
 namespace auto_news.ApiServices
 {
     [RoutePrefix("api")]
-    public class ArticlesController : ApiController
+    public class AutoNewsApiController : ApiController
     {
+
+        private AutoNewsDbContext _db = new AutoNewsDbContext();
+
+        #region Articles Api
+
         /// <summary>
         /// get Article by id
         /// </summary>
-
         /// <param name="id">Article id to get</param>
         /// <response code="200">successful operation</response>
         /// <response code="400">Invalid ID supplied</response>
         /// <response code="404">Article not found</response>
-
-        private AutoNewsDbContext _db = new AutoNewsDbContext();
-
         //GET api/articles/id
-        [Route("articles/{id}")]
-        public async Task<IHttpActionResult> GetArticleById(int id)
+        [Route("articles/{id:int}")]
+        public IHttpActionResult GetArticleById(int id)
         {
             var a = _db.Articles.Find(id);
             if (a == null) return NotFound();
             else return Ok(a);
-
         }
 
-        //string ids,int? categoryId,int? sourceId,string fields, DateTime? fromDateTime,DateTime? toDateTime, string sortBy,string order = "asc", int limit = 10,int page = 1
-
-        [Route("articles")]
+        [Route("articles",Name = "articles")]
         public IHttpActionResult GetArticles([FromUri] ArticleQuery query)
         {
             if (query == null) query = new ArticleQuery();
@@ -99,6 +97,94 @@ namespace auto_news.ApiServices
 
         }
 
+        #endregion Articles Api
+
+        #region Categories Api
+        [Route("categories")]
+        public IHttpActionResult GetCategories()
+        {
+            var result = _db.Categories.Select(i => new { i.Id, i.Name, i.Description });
+            if (result == null) return NotFound();
+            else return Ok(result);
+        }
+
+        [Route("categories/count")]
+        public IHttpActionResult GetCountCategories()
+        {
+            return Ok(_db.Categories.Count());
+
+        }
+
+
+        [Route("categories/{id:int}")]
+        public IHttpActionResult GetCategoryById(int id)
+        {
+            var result = _db.Categories.Where(i => i.Id == id).Select(i => new { i.Id, i.Name, i.Description }).FirstOrDefault();
+            if (result == null) return NotFound();
+            else return Ok(result);
+        }
+
+        [Route("categories/{categoryId:int}/articles")]
+        public IHttpActionResult GetArticlesByCategory(int categoryId, [FromUri] ArticleQuery query)
+        {
+            if (query == null) query = new ArticleQuery();
+            query.categoryId = categoryId;
+
+            return GetArticles(query);
+        }
+
+        [Route("categories/{categoryId:int}/articles/count")]
+        public IHttpActionResult GetCountArticlesByCategory(int categoryId, [FromUri] ArticleQuery query)
+        {
+            if (query == null) query = new ArticleQuery();
+            query.categoryId = categoryId;
+            return GetCountArticles(query);
+        }
+
+        #endregion Categories Api
+
+        #region NewsSources Api
+
+        [Route("sources")]
+        public IHttpActionResult GetSources()
+        {
+            var result = _db.NewsSources.Select(i => new { i.Id, i.Name, i.Description });
+            if (result == null) return NotFound();
+            else return Ok(result);
+        }
+
+        [Route("sources/count")]
+        public IHttpActionResult GetCountSources()
+        {
+            return Ok(_db.NewsSources.Count());
+        }
+
+        [Route("sources/{id:int}")]
+        public IHttpActionResult GetSourceById(int id)
+        {
+            var result = _db.NewsSources.Where(i => i.Id == id).Select(i => new { i.Id, i.Name, i.Description }).FirstOrDefault();
+            if (result == null) return NotFound();
+            else return Ok(result);
+        }
+
+        [Route("sources/{sourceId:int}/articles")]
+        public IHttpActionResult GetArticlesBySource(int sourceId, [FromUri] ArticleQuery query)
+        {
+            if (query == null) query = new ArticleQuery();
+            query.sourceId = sourceId;
+            return GetArticles(query);
+        }
+
+        [Route("sources/{sourceId:int}/articles/count")]
+        public IHttpActionResult GetCountArticlesBySource(int sourceId,[FromUri] ArticleQuery query)
+        {
+            if (query == null) query = new ArticleQuery();
+            query.sourceId = sourceId;
+            return GetCountArticles(query);
+        }
+
+        #endregion NewsSources Api
+
         private IQueryable<Article> GetFilteredArticles(ArticleQuery query)
         {
             var articles = _db.Articles.Select(i => i);
@@ -149,6 +235,7 @@ namespace auto_news.ApiServices
         }
 
     }
+
 
     public class ArticleQuery
     {
