@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace Crawl_News_Module
 {
@@ -13,10 +14,10 @@ namespace Crawl_News_Module
     {
         public object MVCAppllication { get; private set; }
 
-        public List<string> CrawlLinkFromUrl(string url, CrawlLinkConfig config)
+        public async Task<List<string>> CrawlLinkFromUrl(string url, CrawlLinkConfig config)
         {
             var parser = new HtmlParser();
-            var document = parser.Parse(GetHtmlFromUrl(url));
+            var document = parser.Parse(await GetHtmlFromUrl(url));
             var links = document.QuerySelectorAll(config.LinkQuery);
 
             List<string> urls = new List<string>();
@@ -72,12 +73,12 @@ namespace Crawl_News_Module
 
         }
 
-        public CrawlArticle DoCrawlSingleUrl(string url, CrawlPageConfig crawlPageConfig)
+        public async Task<CrawlArticle> DoCrawlSingleUrl(string url, CrawlPageConfig crawlPageConfig)
         {
             try
             {
                 var parser = new HtmlParser();
-                var document = parser.Parse(GetHtmlFromUrl(url));
+                var document = parser.Parse(await GetHtmlFromUrl(url));
                 var title = document.QuerySelector(crawlPageConfig.Title).TextContent;
 
                 var contents = "";
@@ -118,11 +119,11 @@ namespace Crawl_News_Module
 
         }
 
-        public string GetHtmlFromUrl(string url)
+        public async Task<string> GetHtmlFromUrl(string url)
         {
             HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(url);
             myRequest.Method = "GET";
-            WebResponse myResponse = myRequest.GetResponse();
+            WebResponse myResponse = await myRequest.GetResponseAsync();
             StreamReader sr = new StreamReader(myResponse.GetResponseStream(), System.Text.Encoding.UTF8);
             return sr.ReadToEnd();
         }

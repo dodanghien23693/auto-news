@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace auto_news.Ultil
@@ -19,14 +20,15 @@ namespace auto_news.Ultil
         public static CrawlerService Crawler = new CrawlerService();
 
 
-        public void DoCrawl(CrawlConfigJson configObject)
+        public async void DoCrawl(CrawlConfigJson configObject)
         {
 
             if (configObject.Method.MethodId == CrawlMethodId.SingleUrl)
             {
                 //dynamic description = JsonConvert.DeserializeObject(configObject.Description);
                 string url = configObject.Method.Description.Url;
-                var article = Crawler.DoCrawlSingleUrl(url, configObject.CrawlPageConfig);
+                var article = await Crawler.DoCrawlSingleUrl(url, configObject.CrawlPageConfig);
+
                 if (article != null)
                 {
                     AddArticle(article, configObject, new LinkConfig() { Url = url, CategoryId = configObject.CategoryId });
@@ -42,7 +44,7 @@ namespace auto_news.Ultil
                     if (IsCrawled(url, configObject)) break;
                     else
                     {
-                        var article = Crawler.DoCrawlSingleUrl(url, configObject.CrawlPageConfig);
+                        var article = await Crawler.DoCrawlSingleUrl(url, configObject.CrawlPageConfig);
                         if (article != null)
                         {
                             AddArticle(article, configObject, new LinkConfig() { Url = url, CategoryId = configObject.CategoryId });
@@ -69,7 +71,7 @@ namespace auto_news.Ultil
                 {
                     var HasNewArticle = true;
                     var link = links[i];
-                    List<string> urls = Crawler.CrawlLinkFromUrl(link.Url, configObject.Method.Description.CrawlLinkConfig.ToObject<CrawlLinkConfig>());
+                    List<string> urls = await Crawler.CrawlLinkFromUrl(link.Url, configObject.Method.Description.CrawlLinkConfig.ToObject<CrawlLinkConfig>());
                     var j = 0;
                     while (HasNewArticle && j < urls.Count)
                     {
@@ -81,7 +83,7 @@ namespace auto_news.Ultil
                         }
                         else
                         {
-                            var article = Crawler.DoCrawlSingleUrl(link.Url, configObject.CrawlPageConfig);
+                            var article = await Crawler.DoCrawlSingleUrl(link.Url, configObject.CrawlPageConfig);
                             if (article != null)
                             {
                                 AddArticle(article, configObject, link);
