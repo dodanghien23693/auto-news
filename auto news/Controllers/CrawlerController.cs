@@ -179,13 +179,18 @@ namespace auto_news.Controllers
         }
 
         [HttpPost]
-        public JsonResult UpdateCrawlConfig(CrawlConfig crawlConfig)
+        public ActionResult UpdateCrawlConfig(CrawlConfig crawlConfig,string type)
         {
             try
             {
                 _db.Entry(crawlConfig).State = EntityState.Modified;
                 _db.SaveChanges();
-                return Json(new { Result = "OK" });
+                if (type == "update")
+                {
+                    return Redirect("/Crawler/PageCrawlConfig?type=update&id=" + crawlConfig.Id);
+
+                }
+                else return Json(new { Result = "OK" });
             }
             catch (Exception ex)
             {
@@ -194,14 +199,17 @@ namespace auto_news.Controllers
         }
 
         [HttpPost]
-        public JsonResult CreateCrawlConfig(CrawlConfig crawlConfig)
+        public ActionResult CreateCrawlConfig(CrawlConfig crawlConfig,string type)
         {
             try
             {
-
                 var c = _db.CrawlConfigs.Add(crawlConfig);
                 _db.SaveChanges();
-                return Json(new { Result = "OK", Record = c });
+                if (type == "add")
+                {
+                    return Redirect("/Crawler/PageCrawlConfig?type=update&id=" + c.Id);
+                }
+                else return Json(new { Result = "OK", Record = c });
             }
             catch (Exception ex)
             {
@@ -210,12 +218,11 @@ namespace auto_news.Controllers
         }
 
         #endregion CrawlConfig CRUD
-        public ActionResult PageCrawlConfig(int id)
-        {
-            
+        public ActionResult PageCrawlConfig(int? id,string type)
+        {    
             try
             {
-                var config = _db.CrawlConfigs.Find(id);
+                ViewBag.Type = type;
 
                 var categories = _db.Categories.Select(i => i).OrderBy(i => i.Id);
                 ViewBag.CategoriesId = JsonConvert.SerializeObject(categories.Select(i => i.Id).ToArray());
@@ -226,7 +233,19 @@ namespace auto_news.Controllers
                 ViewBag.NewsSourceIds = JsonConvert.SerializeObject(newsSources.Select(i => i.Id).ToArray());
                 ViewBag.NewsSourceNames = JsonConvert.SerializeObject(newsSources.Select(i => i.Name).ToArray());
 
-                return View(config);
+                if (type == "add")
+                {
+                    return View(new CrawlConfig());
+                }
+                else if(type=="update")
+                {
+                    var config = _db.CrawlConfigs.Find(id);
+                    if (config != null)
+                    {
+                        return View(config);
+                    }
+                }
+                return HttpNotFound();                
             }
             catch(Exception ex)
             {

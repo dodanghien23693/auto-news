@@ -1,6 +1,11 @@
 ﻿
 @section SPAViews {
 
+
+
+<div class="btn btn-info"><a style="color:white" href="/Crawler/PageCrawlConfig?type=add" target="_blank">Add Crawl Config</a></div>
+  <br /><br />
+
 <div id="NewsSourceTable" style="width: 100%; margin: auto;"></div>
 
 }
@@ -62,8 +67,14 @@
                                                 defaultValue:'false'
                                             },
                                             Description:{
-                                                title:'Description'
+                                                title: 'Description',
+                                                display: function (crawlConfig) {
+                                                    var $action = $('<a href="/Crawler/PageCrawlConfig?type=update&id='+crawlConfig.record.Id+'" target="_blank">Edit Description</a>');
+                                                    
+                                                    return $action;
+                                                }
                                             }
+
                                         }
                                     },function(data){
                                         data.childTable.jtable('load');
@@ -81,6 +92,7 @@
                         title: 'Description',
                         width: '30%'
                     }
+                    
                 }
             });
 

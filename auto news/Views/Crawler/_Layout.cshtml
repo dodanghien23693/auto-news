@@ -55,5 +55,14 @@
     @Scripts.Render("~/bundles/jqueryui")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("Scripts", required: false)
+
+    <script>
+        
+        $(document).ready(function () {
+            $("a[href='" + window.location.pathname + "']").closest("li").addClass("active");
+        });
+
+    </script>  
+
 </body>
 </html>
