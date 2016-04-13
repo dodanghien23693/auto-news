@@ -108,8 +108,9 @@ namespace auto_news.Ultil
                     CategoryId = link.CategoryId,
                     OriginUrl = link.Url,
                     CreateTime = DateTime.Now,
-                    Category = AutoNewsDb.Categories.FirstOrDefault(c => c.Id == link.CategoryId),
-                    NewsSource = AutoNewsDb.NewsSources.FirstOrDefault(n => n.Id == config.NewsSourceId)
+                    
+                    //Category = AutoNewsDb.Categories.FirstOrDefault(c => c.Id == link.CategoryId),
+                    //NewsSource = AutoNewsDb.NewsSources.FirstOrDefault(n => n.Id == config.NewsSourceId)
                 });
 
                 AutoNewsDb.SaveChanges();

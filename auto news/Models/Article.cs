@@ -35,8 +35,8 @@ namespace auto_news.Models
         [StringLength(500)]
         public string OriginUrl { get; set; }
 
-        public virtual Category Category { get; set; }
+        //public virtual Category Category { get; set; }
 
-        public virtual NewsSource NewsSource { get; set; }
+        //public virtual NewsSource NewsSource { get; set; }
     }
 }

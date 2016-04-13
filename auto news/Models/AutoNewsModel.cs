@@ -39,19 +39,19 @@ namespace auto_news.Models
                 .WithMany(e => e.AspNetRoles)
                 .Map(m => m.ToTable("AspNetUserRoles").MapLeftKey("RoleId").MapRightKey("UserId"));
 
-            modelBuilder.Entity<Category>()
-                .HasMany(e => e.Articles)
-                .WithRequired(e => e.Category)
-                .WillCascadeOnDelete(false);
+            //modelBuilder.Entity<Category>()
+            //    .HasMany(e => e.Articles)
+            //    .WithRequired(e => e.Category)
+            //    .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<CrawlConfig>()
                 .Property(e => e.Description)
                 .IsUnicode(true);
 
-            modelBuilder.Entity<NewsSource>()
-                .HasMany(e => e.Articles)
-                .WithRequired(e => e.NewsSource)
-                .WillCascadeOnDelete(false);
+            //modelBuilder.Entity<NewsSource>()
+            //    .HasMany(e => e.Articles)
+            //    .WithRequired(e => e.NewsSource)
+            //    .WillCascadeOnDelete(false);
         }
     }
 }

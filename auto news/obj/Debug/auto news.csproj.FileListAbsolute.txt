@@ -164,3 +164,7 @@ E:\projects\auto news\auto news\bin\AngleSharp.xml
 E:\projects\auto news\auto news\bin\log4net.dll
 E:\projects\auto news\auto news\bin\log4net.xml
 E:\projects\auto news\auto news\obj\Debug\auto news.csprojResolveAssemblyReference.cache
+E:\projects\auto news\auto news\bin\FluentValidationNA.dll
+E:\projects\auto news\auto news\bin\System.Linq.Dynamic.dll
+E:\projects\auto news\auto news\bin\FluentValidationNA.xml
+E:\projects\auto news\auto news\bin\System.Linq.Dynamic.xml
