@@ -1,4 +1,5 @@
-﻿using AngleSharp.Parser.Html;
+﻿using AngleSharp.Dom.Html;
+using AngleSharp.Parser.Html;
 using auto_news;
 using auto_news.Ultil;
 using Crawl_Config;
@@ -6,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Crawl_News_Module
@@ -14,10 +17,10 @@ namespace Crawl_News_Module
     {
         public object MVCAppllication { get; private set; }
 
-        public async Task<List<string>> CrawlLinkFromUrl(string url, CrawlLinkConfig config)
+        public List<string> CrawlLinkFromUrl(string url, CrawlLinkConfig config)
         {
             var parser = new HtmlParser();
-            var document = parser.Parse(await GetHtmlFromUrl(url));
+            var document = parser.Parse(GetHtmlFromUrl(url));
             var links = document.QuerySelectorAll(config.LinkQuery);
 
             List<string> urls = new List<string>();
@@ -73,13 +76,32 @@ namespace Crawl_News_Module
 
         }
 
-        public async Task<CrawlArticle> DoCrawlSingleUrl(string url, CrawlPageConfig crawlPageConfig)
+        public  CrawlArticle DoCrawlSingleUrl(string url, CrawlPageConfig crawlPageConfig)
         {
             try
             {
+                //Thread.Sleep(300);
                 var parser = new HtmlParser();
-                var document = parser.Parse(await GetHtmlFromUrl(url));
+                var document = parser.Parse(GetHtmlFromUrl(url));
                 var title = document.QuerySelector(crawlPageConfig.Title).TextContent;
+                string description = "";
+
+                var descriptionElement = document.QuerySelector((string)crawlPageConfig.Description.Query);
+                if (descriptionElement != null)
+                {
+                    if ((string)crawlPageConfig.Description.Excludes != null && ((string)crawlPageConfig.Description.Excludes) != "")
+                    {
+                        foreach (var e in ((string)crawlPageConfig.Description.Excludes).Split(','))
+                        {
+                            foreach (var child in descriptionElement.QuerySelectorAll(e))
+                            {
+                                child.Remove();
+                            }
+                        }
+                    }
+                    description = descriptionElement.InnerHtml;
+                }
+                
 
                 var contents = "";
                 string imageUrl = "";
@@ -99,31 +121,61 @@ namespace Crawl_News_Module
                     }
 
                     contents += rawContent.InnerHtml;
-                    if (imageUrl == "")
-                    {
-                        if (rawContent.QuerySelector("img") != null)
-                        {
-                            imageUrl = rawContent.QuerySelector("img").GetAttribute("src");
-                        }
-                    }
-
+                    //if (imageUrl == "")
+                    //{
+                    //    if (rawContent.QuerySelector("img") != null)
+                    //    {
+                    //        imageUrl = rawContent.QuerySelector("img").GetAttribute("src");
+                    //    }
+                    //}
+     
                 }
 
-                return new CrawlArticle() { Content = contents, Title = title, ImageUrl = imageUrl };
+                contents = RemoveExtraContent(contents);
+                Regex regex = new Regex("<img [^>]*src=\"([^ \"]+)");
+                Match match = regex.Match(contents.ToLower());
+                if (match.Success)
+                {
+                    var s = match.Value;
+                    imageUrl = s.Substring(s.IndexOf("src=\"")+5);
+                } 
+                return new CrawlArticle() { Content = contents, Title = title, Description = description, ImageUrl = imageUrl };
             }
             catch(Exception ex)
             {
-                MvcApplication.log.Error("Crawl Single Url Error", ex);
+                Console.Write(ex.Message);
             }
+
+
             return null;
+            
 
         }
 
-        public async Task<string> GetHtmlFromUrl(string url)
+
+        private static string[] _filterList = { "script", "input[type='hidden']", "iframe", "style" };
+
+        public HtmlParser  _htmlParser = new HtmlParser();
+
+        public string RemoveExtraContent(string content)
+        {
+            var document = _htmlParser.Parse("<div id='autonews-filter-content'>"+content+"</div>");
+            foreach(var e in _filterList)
+            {
+                foreach (var child in document.QuerySelectorAll(e))
+                {
+                    child.Remove();
+                }
+            }
+            return document.QuerySelector("#autonews-filter-content").InnerHtml;
+
+        }
+
+        public string GetHtmlFromUrl(string url)
         {
             HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(url);
             myRequest.Method = "GET";
-            WebResponse myResponse = await myRequest.GetResponseAsync();
+            WebResponse myResponse =  myRequest.GetResponse();
             StreamReader sr = new StreamReader(myResponse.GetResponseStream(), System.Text.Encoding.UTF8);
             return sr.ReadToEnd();
         }

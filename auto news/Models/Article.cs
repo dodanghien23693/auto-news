@@ -15,10 +15,10 @@ namespace auto_news.Models
 
         public DateTime? CreateTime { get; set; }
 
-        [StringLength(200)]
+        [StringLength(300)]
         public string Title { get; set; }
 
-        [StringLength(400)]
+        [StringLength(1000)]
         public string Description { get; set; }
 
         [StringLength(500)]

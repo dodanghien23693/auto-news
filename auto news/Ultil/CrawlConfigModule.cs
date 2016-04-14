@@ -21,6 +21,7 @@ namespace Crawl_Config
     {
         public string Url { get; set; }
         public string Title { get; set; }
+        public string Description { get; set; }
         public string Content { get; set; }
         public string ImageUrl { get; set; }
     }
@@ -52,6 +53,7 @@ namespace Crawl_Config
     public class CrawlPageConfig
     {
         public string Title { get; set; }
+        public dynamic Description { get; set; }
         public List<ContentQuery> Contents { get; set; }
     }
 

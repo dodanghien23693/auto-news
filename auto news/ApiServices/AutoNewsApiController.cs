@@ -129,7 +129,6 @@ namespace auto_news.ApiServices
         {
             if (query == null) query = new ArticleQuery();
             query.categoryId = categoryId;
-
             return GetArticles(query);
         }
 

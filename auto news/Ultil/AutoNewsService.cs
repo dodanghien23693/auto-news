@@ -20,14 +20,14 @@ namespace auto_news.Ultil
         public static CrawlerService Crawler = new CrawlerService();
 
 
-        public async void DoCrawl(CrawlConfigJson configObject)
+        public void DoCrawl(CrawlConfigJson configObject)
         {
 
             if (configObject.Method.MethodId == CrawlMethodId.SingleUrl)
             {
                 //dynamic description = JsonConvert.DeserializeObject(configObject.Description);
                 string url = configObject.Method.Description.Url;
-                var article = await Crawler.DoCrawlSingleUrl(url, configObject.CrawlPageConfig);
+                var article =  Crawler.DoCrawlSingleUrl(url, configObject.CrawlPageConfig);
 
                 if (article != null)
                 {
@@ -44,7 +44,7 @@ namespace auto_news.Ultil
                     if (IsCrawled(url, configObject)) break;
                     else
                     {
-                        var article = await Crawler.DoCrawlSingleUrl(url, configObject.CrawlPageConfig);
+                        var article =  Crawler.DoCrawlSingleUrl(url, configObject.CrawlPageConfig);
                         if (article != null)
                         {
                             AddArticle(article, configObject, new LinkConfig() { Url = url, CategoryId = configObject.CategoryId });
@@ -71,7 +71,7 @@ namespace auto_news.Ultil
                 {
                     var HasNewArticle = true;
                     var link = links[i];
-                    List<string> urls = await Crawler.CrawlLinkFromUrl(link.Url, configObject.Method.Description.CrawlLinkConfig.ToObject<CrawlLinkConfig>());
+                    List<string> urls =  Crawler.CrawlLinkFromUrl(link.Url, configObject.Method.Description.CrawlLinkConfig.ToObject<CrawlLinkConfig>());
                     var j = 0;
                     while (HasNewArticle && j < urls.Count)
                     {
@@ -83,10 +83,10 @@ namespace auto_news.Ultil
                         }
                         else
                         {
-                            var article = await Crawler.DoCrawlSingleUrl(link.Url, configObject.CrawlPageConfig);
+                            var article =  Crawler.DoCrawlSingleUrl(link.Url, configObject.CrawlPageConfig);
                             if (article != null)
                             {
-                                AddArticle(article, configObject, link);
+                                 AddArticle(article, configObject, link);
                             }
                         }
                         j++;
@@ -96,7 +96,7 @@ namespace auto_news.Ultil
             }
         }
 
-        public void AddArticle(CrawlArticle article, CrawlConfigJson config, LinkConfig link)
+        public int AddArticle(CrawlArticle article, CrawlConfigJson config, LinkConfig link)
         {
             try
             {
@@ -105,22 +105,24 @@ namespace auto_news.Ultil
                     CrawlConfigId = config.Id,
                     NewsSourceId = config.NewsSourceId,
                     Title = article.Title,
+                    Description = article.Description,
                     ImageUrl = article.ImageUrl,
                     RawContent = article.Content,
                     CategoryId = link.CategoryId,
                     OriginUrl = link.Url,
-                    CreateTime = DateTime.Now,
+                    CreateTime = DateTime.UtcNow,
                     
                     //Category = AutoNewsDb.Categories.FirstOrDefault(c => c.Id == link.CategoryId),
                     //NewsSource = AutoNewsDb.NewsSources.FirstOrDefault(n => n.Id == config.NewsSourceId)
                 });
 
-                AutoNewsDb.SaveChanges();
+                return AutoNewsDb.SaveChanges();
             }
             catch (Exception ex)
             {
                 MvcApplication.log.Error("Add Article Error", ex);
             }
+            return 0;
 
         }
         private bool IsCrawled(string url, CrawlConfigJson configObject)
@@ -136,6 +138,12 @@ namespace auto_news.Ultil
             foreach (var crawlCf in crawlConfigs)
             {
                 CrawlConfigJson config = JsonConvert.DeserializeObject<CrawlConfigJson>(crawlCf.Description);
+                var newsSource = _db.NewsSources.Where(i => i.Id == config.NewsSourceId).FirstOrDefault();
+                var sourceName = "Unknown";
+                if (newsSource != null)
+                {
+                    sourceName = newsSource.Name;
+                }
                 config.NewsSourceId = crawlCf.NewsSourceId;
                 config.Id = crawlCf.Id;
                 ScheduleConfig schedule = config.ScheduleConfig;
@@ -185,7 +193,7 @@ namespace auto_news.Ultil
                         }
                     }
 
-                    RecurringJob.AddOrUpdate(config.Id.ToString(), () => DoCrawl(config),cron);
+                    RecurringJob.AddOrUpdate(sourceName+"-"+config.Id.ToString(), () => DoCrawl(config),cron);
                 }
 
                 crawlCf.IsScheduled = true;

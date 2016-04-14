@@ -287,6 +287,14 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\bootstrap-3.3.6-dist\css\bootstrap-theme.css" />
+    <Content Include="Scripts\bootstrap-3.3.6-dist\css\bootstrap-theme.min.css" />
+    <Content Include="Scripts\bootstrap-3.3.6-dist\css\bootstrap.css" />
+    <Content Include="Scripts\bootstrap-3.3.6-dist\css\bootstrap.min.css" />
+    <Content Include="Scripts\bootstrap-3.3.6-dist\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Scripts\bootstrap-3.3.6-dist\js\bootstrap.js" />
+    <Content Include="Scripts\bootstrap-3.3.6-dist\js\bootstrap.min.js" />
+    <Content Include="Scripts\bootstrap-3.3.6-dist\js\npm.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\HelpPage\Views\Web.config" />
@@ -308,6 +316,14 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\CollectionModelDescription.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
+    <Content Include="Scripts\bootstrap-3.3.6-dist\css\bootstrap-theme.css.map" />
+    <Content Include="Scripts\bootstrap-3.3.6-dist\css\bootstrap-theme.min.css.map" />
+    <Content Include="Scripts\bootstrap-3.3.6-dist\css\bootstrap.css.map" />
+    <Content Include="Scripts\bootstrap-3.3.6-dist\css\bootstrap.min.css.map" />
+    <Content Include="Scripts\bootstrap-3.3.6-dist\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Scripts\bootstrap-3.3.6-dist\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Scripts\bootstrap-3.3.6-dist\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Scripts\bootstrap-3.3.6-dist\fonts\glyphicons-halflings-regular.woff2" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\datatable\dataTables.bootstrap.min.css" />
     <Content Include="Scripts\datatable\jquery.dataTables.min.css" />
@@ -454,6 +470,14 @@
     <Content Include="Scripts\knockout.validation.debug.js" />
     <Content Include="Scripts\knockout.validation.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\react\react-dom-server.js" />
+    <Content Include="Scripts\react\react-dom-server.min.js" />
+    <Content Include="Scripts\react\react-dom.js" />
+    <Content Include="Scripts\react\react-dom.min.js" />
+    <Content Include="Scripts\react\react-with-addons.js" />
+    <Content Include="Scripts\react\react-with-addons.min.js" />
+    <Content Include="Scripts\react\react.js" />
+    <Content Include="Scripts\react\react.min.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\sammy-0.7.4.js" />
@@ -530,6 +554,8 @@
     <Content Include="Scripts\jtable.2.4.0\themes\metro\purple\jtable.less" />
     <Content Include="Scripts\jtable.2.4.0\themes\metro\red\jtable.less" />
     <Content Include="Views\Crawler\CategoriesConfig.cshtml" />
+    <Content Include="Views\Home\_Layout.cshtml" />
+    <Content Include="Views\Home\_ViewStart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
