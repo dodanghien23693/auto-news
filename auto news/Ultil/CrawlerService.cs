@@ -32,13 +32,18 @@ namespace Crawl_News_Module
 
                 string imageContainer = "";
                 if (crawlLinkConfig.ImageContainer != null) imageContainer = crawlLinkConfig.ImageContainer;
-                var imageElement = document.QuerySelector(imageContainer+" a[href='" + articleUrl + "'] img");
                 var imageUrl = "";
-                if (imageElement != null)
+                foreach (var query in imageContainer.Split(','))
                 {
-                    imageUrl = imageElement.GetAttribute("src");
+                    var imageElement = document.QuerySelector(query + " a[href='" + articleUrl + "'] img");
+                    
+                    if (imageElement != null)
+                    {
+                        imageUrl = imageElement.GetAttribute("src");
+                        break;
+                    }
                 }
-
+                
                 listLinkConfig.Add(new LinkConfig() { ImageUrl = imageUrl, Url = articleUrl,CategoryId = categoryId });
                 //urls.Add(link.GetAttribute(crawlLinkConfig.Attribute));
 
@@ -187,7 +192,6 @@ namespace Crawl_News_Module
                 //    var s = match.Value;
                 //    imageUrl = s.Substring(s.IndexOf("src=\"")+5);
                 //} 
-
 
                 return new CrawlArticle() { Content = contents, Title = title, Description = description };
             }

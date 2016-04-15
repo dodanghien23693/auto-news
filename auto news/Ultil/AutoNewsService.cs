@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -88,6 +89,10 @@ namespace auto_news.Ultil
                             if (article != null)
                             {
                                  article.ImageUrl = link.ImageUrl;
+                                if (article.ImageUrl.Trim() == "")
+                                {
+                                    article.ImageUrl = GetFirstImageUrl(article.Content);
+                                }
                                  AddArticle(article, configObject, link);
                             }
                         }
@@ -96,6 +101,19 @@ namespace auto_news.Ultil
                     i++;
                 }
             }
+        }
+
+        private string GetFirstImageUrl(string content)
+        {
+            string imageUrl = "";
+            Regex regex = new Regex("<img [^>]*src=\"([^ \"]+)");
+            Match match = regex.Match(content);
+            if (match.Success)
+            {
+                var s = match.Value;
+                imageUrl = s.Substring(s.IndexOf("src=\"") + 5);
+            }
+            return imageUrl;
         }
 
         public int AddArticle(CrawlArticle article, CrawlConfigJson config, LinkConfig link)
