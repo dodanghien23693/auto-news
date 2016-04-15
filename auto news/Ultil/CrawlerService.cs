@@ -17,19 +17,34 @@ namespace Crawl_News_Module
     {
         public object MVCAppllication { get; private set; }
 
-        public List<string> CrawlLinkFromUrl(string url, CrawlLinkConfig config)
+        public List<LinkConfig> CrawlLinkFromUrl(string url, CrawlLinkConfig crawlLinkConfig,int categoryId)
         {
+            List<LinkConfig> listLinkConfig = new List<LinkConfig>();
+            //CrawlLinkConfig crawlConfig = configObject.Method.Description.CrawlLinkConfig.ToObject<CrawlLinkConfig>();
             var parser = new HtmlParser();
             var document = parser.Parse(GetHtmlFromUrl(url));
-            var links = document.QuerySelectorAll(config.LinkQuery);
+            var links = document.QuerySelectorAll(crawlLinkConfig.LinkQuery);
 
             List<string> urls = new List<string>();
             foreach (var link in links)
             {
-                urls.Add(link.GetAttribute(config.Attribute));
+                var articleUrl = link.GetAttribute(crawlLinkConfig.Attribute);
+
+                string imageContainer = "";
+                if (crawlLinkConfig.ImageContainer != null) imageContainer = crawlLinkConfig.ImageContainer;
+                var imageElement = document.QuerySelector(imageContainer+" a[href='" + articleUrl + "'] img");
+                var imageUrl = "";
+                if (imageElement != null)
+                {
+                    imageUrl = imageElement.GetAttribute("src");
+                }
+
+                listLinkConfig.Add(new LinkConfig() { ImageUrl = imageUrl, Url = articleUrl,CategoryId = categoryId });
+                //urls.Add(link.GetAttribute(crawlLinkConfig.Attribute));
+
             }
 
-            return urls;
+            return listLinkConfig;
         }
 
         public void GenerateLinkFromParams(int i, dynamic pas, string[] Urls, int categoryId, List<LinkConfig> links)
@@ -76,6 +91,28 @@ namespace Crawl_News_Module
 
         }
 
+        static Regex _htmlRegex = new Regex("<.*?>", RegexOptions.Compiled);
+        public string RemoveHtmlTag(string input)
+        {
+            return _htmlRegex.Replace(input, string.Empty);
+        }
+
+        public string TruncateAtWord(string value, int length)
+        {
+            if (value == null || value.Trim().Length <= length)
+                return value;
+
+            int index = value.Trim().LastIndexOf(" ");
+
+            while ((index + 3) > length)
+                index = value.Substring(0, index).Trim().LastIndexOf(" ");
+
+            if (index > 0)
+                return value.Substring(0, index) + "...";
+
+            return value.Substring(0, length - 3) + "...";
+        }
+
         public  CrawlArticle DoCrawlSingleUrl(string url, CrawlPageConfig crawlPageConfig)
         {
             try
@@ -84,6 +121,7 @@ namespace Crawl_News_Module
                 var parser = new HtmlParser();
                 var document = parser.Parse(GetHtmlFromUrl(url));
                 var title = document.QuerySelector(crawlPageConfig.Title).TextContent;
+
                 string description = "";
 
                 var descriptionElement = document.QuerySelector((string)crawlPageConfig.Description.Query);
@@ -99,12 +137,13 @@ namespace Crawl_News_Module
                             }
                         }
                     }
-                    description = descriptionElement.InnerHtml;
+                    description = RemoveHtmlTag(descriptionElement.InnerHtml).Trim();
                 }
+                
                 
 
                 var contents = "";
-                string imageUrl = "";
+                
                 foreach (var contentQuery in crawlPageConfig.Contents)
                 {
                     var rawContent = document.QuerySelector(contentQuery.Query);
@@ -132,14 +171,25 @@ namespace Crawl_News_Module
                 }
 
                 contents = RemoveExtraContent(contents);
-                Regex regex = new Regex("<img [^>]*src=\"([^ \"]+)");
-                Match match = regex.Match(contents.ToLower());
-                if (match.Success)
+
+
+                if (description == null || description == "" || description.Length < 100)
                 {
-                    var s = match.Value;
-                    imageUrl = s.Substring(s.IndexOf("src=\"")+5);
-                } 
-                return new CrawlArticle() { Content = contents, Title = title, Description = description, ImageUrl = imageUrl };
+                    //description = (contents.Length > 300) ? contents.Substring(0, 500) : contents;
+                    description = TruncateAtWord(RemoveHtmlTag(contents).Replace(title,""), 200);
+                }
+
+                //string imageUrl = "";
+                //Regex regex = new Regex("<img [^>]*src=\"([^ \"]+)");
+                //Match match = regex.Match(contents);
+                //if (match.Success)
+                //{
+                //    var s = match.Value;
+                //    imageUrl = s.Substring(s.IndexOf("src=\"")+5);
+                //} 
+
+
+                return new CrawlArticle() { Content = contents, Title = title, Description = description };
             }
             catch(Exception ex)
             {
@@ -171,13 +221,29 @@ namespace Crawl_News_Module
 
         }
 
+
         public string GetHtmlFromUrl(string url)
         {
-            HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(url);
-            myRequest.Method = "GET";
-            WebResponse myResponse =  myRequest.GetResponse();
-            StreamReader sr = new StreamReader(myResponse.GetResponseStream(), System.Text.Encoding.UTF8);
-            return sr.ReadToEnd();
+            WebResponse myResponse = null;
+            StreamReader sr = null;
+            try
+            {
+                HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(url);
+                myRequest.Method = "GET";
+                myResponse = myRequest.GetResponse();
+                sr = new StreamReader(myResponse.GetResponseStream(), System.Text.Encoding.UTF8);
+                return sr.ReadToEnd();
+            }
+            catch(Exception ex)
+            {
+
+            }
+            finally
+            {
+                sr.Dispose();
+                myResponse.Dispose();
+            }
+            return "";
         }
     }
 }

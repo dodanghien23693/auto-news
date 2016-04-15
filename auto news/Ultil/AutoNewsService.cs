@@ -70,22 +70,24 @@ namespace auto_news.Ultil
                 while (i < links.Count)
                 {
                     var HasNewArticle = true;
-                    var link = links[i];
-                    List<string> urls =  Crawler.CrawlLinkFromUrl(link.Url, configObject.Method.Description.CrawlLinkConfig.ToObject<CrawlLinkConfig>());
+                    //var link = links[i];
+                    List<LinkConfig> linksConfig =  Crawler.CrawlLinkFromUrl(links[i].Url, configObject.Method.Description.CrawlLinkConfig.ToObject<CrawlLinkConfig>(),links[i].CategoryId);
                     var j = 0;
-                    while (HasNewArticle && j < urls.Count)
+                    while (HasNewArticle && j < linksConfig.Count)
                     {
-                        string url = configObject.Method.Description.BaseUrl + urls[j];
-                        link.Url = url;
-                        if (IsCrawled(url, configObject))
+                        var link = linksConfig[j];
+                        link.Url = configObject.Method.Description.BaseUrl + link.Url;
+                        if (IsCrawled(link.Url, configObject))
                         {
                             HasNewArticle = false;
                         }
                         else
                         {
                             var article =  Crawler.DoCrawlSingleUrl(link.Url, configObject.CrawlPageConfig);
+
                             if (article != null)
                             {
+                                 article.ImageUrl = link.ImageUrl;
                                  AddArticle(article, configObject, link);
                             }
                         }

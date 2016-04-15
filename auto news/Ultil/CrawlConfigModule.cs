@@ -10,10 +10,12 @@ namespace Crawl_Config
     {
         public string LinkQuery { get; set; }
         public string Attribute { get; set; }
+        public string ImageContainer { get; set; }
     }
     public class LinkConfig
     {
         public string Url { get; set; }
+        public string ImageUrl { get; set; }
         public int CategoryId { get; set; }
     }
 
