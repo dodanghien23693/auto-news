@@ -29,6 +29,148 @@ function FindObject(arrayObject,attribute,value){
     return undefined;
 }
 
+var SourcesConfig = React.createClass({
+    getInitialState: function () {
+        return { sources: [], selectedSources :[]}
+    },
+    componentDidMount: function () {
+        $.ajax({
+            url: "/api/sources",
+            dataType: 'json',
+            cache: false,
+            success: function (data) {
+                this.setState({ sources: data, selectedSources: this.state.selectedSources });
+
+                var options = {
+                    data: data,
+
+                    getValue: "name",
+
+                    //template: {
+                    //    type: "description",
+                    //    fields: {
+                    //        description: "name"
+                    //    }
+                    //},
+
+                    list: {
+                        match: {
+                            enabled: true
+                        },
+                        onSelectItemEvent: function () {
+                            var sourceId = $("#sources-config").getSelectedItemData().id;
+                            this.newSourceId = sourceId;
+                            $("#selected-source-id").val(sourceId);
+                        }.bind(this)
+                    },
+
+                    theme: "plate-dark"
+                };
+
+                $("#sources-config").easyAutocomplete(options);
+            }.bind(this),
+            error: function (xhr, status, err) {
+                console.error(this.props.url, status, err.toString());
+            }.bind(this)
+        });
+
+        $.ajax({
+            url: "/api/sources/selected",
+            dataType: 'json',
+            cache: false,
+            success: function (data) {
+                this.setState({ sources: this.state.sources, selectedSources: data });
+     
+            }.bind(this),
+            error: function (xhr, status, err) {
+                console.error(this.props.url, status, err.toString());
+            }.bind(this)
+        });   
+
+    },
+    newSourceId:-1,
+    handleAddSource:function(){
+        //var newSourceId = $("#selected-source-id").val()
+        var s = FindObject(this.state.selectedSources, 'id', this.newSourceId);
+        if (s != undefined) {
+            alert("Nguồn ngày đã tồn tại! vui lòng chọn nguồn khác");
+        }
+        else {
+            
+            //console.log(source);
+            var source = FindObject(this.state.sources, 'id', this.newSourceId);
+            if (source != undefined) {
+                
+                var newArray = this.state.selectedSources;
+                newArray.push(source);
+                this.setState({ sources: this.state.sources, selectedSources: newArray });
+
+                $.ajax({
+                    url: "/api/newsSourceConfig/Add/"+source.id,
+                    type: "POST",
+                    dataType: 'json',
+                    cache: false,
+                    success: function (data) {
+                        
+                    },
+                    error: function (xhr, status, err) {
+                        
+                    }.bind(this)
+                });
+            }
+        }
+    },
+    handleRemoveSource: function (e) {
+        e.preventDefault();
+        var sourceId = parseInt($(e.target).parent().attr("value"));
+
+        var newArray = [];
+        for (var i = 0; i < this.state.selectedSources.length; i++) {
+            if (this.state.selectedSources[i].id != sourceId) newArray.push(this.state.selectedSources[i]);
+        }
+        this.setState({ sources: this.state.sources, selectedSources: newArray });
+
+        $.ajax({
+            url: "/api/newsSourceConfig/Remove/" + sourceId,
+            type: "POST",
+            dataType: 'json',
+            cache: false,
+            success: function (data) {
+                
+            }.bind(this),
+            error: function (xhr, status, err) {
+                //console.error(this.props.url, status, err.toString());
+            }
+        });
+    },
+    render: function () {
+        return (
+                <div style={{position:'relative'}}>
+            
+                   
+                    <input style={{width:'100%'}} id="sources-config" />
+                    <span onClick={this.handleAddSource} id="add-source-btn" className="btn glyphicon glyphicon-plus pull-right" style={{position:'absolute',right:'0'}} ></span>
+                
+                    <input type="hidden" id="selected-source-id" />
+
+                    {this.state.selectedSources.map(function(source){
+                        return <SourceItemConfig key={source.sourceId} data={source} handleRemoveSource={this.handleRemoveSource} />
+                    }.bind(this))}
+
+                </div>
+            );
+}
+});
+
+
+var SourceItemConfig = React.createClass({
+    render: function () {
+        return (
+                <div>{this.props.data.name}<a href="#" value={this.props.data.id} onClick={this.props.handleRemoveSource}  className="pull-right" ><span className="glyphicon glyphicon-remove"></span></a></div>
+            );
+    }
+});
+
 var ListArticle = React.createClass({
     getInitialState: function() {
         return {articles: [],page:1};
@@ -182,13 +324,14 @@ var Article = React.createClass({
 
      $(document).ready(function(){
 
-         ReactDOM.render(<div>
-    <ListArticle  url="http://autonews.dev/api/articles?sourceId=1&limit=10" title="Dân trí" />
-    <ListArticle  url="http://autonews.dev/api/articles?sourceId=2&limit=10" title="Vnexpress" />
-    <ListArticle  url="http://autonews.dev/api/articles?sourceId=3&limit=10" title="Thanh Niên" />
-     <ListArticle  url="http://autonews.dev/api/articles?sourceId=4&limit=10" title="Zing News" />   
-        </div>
-    , document.getElementById('news-container'));
+         ReactDOM.render(<SourcesConfig></SourcesConfig>, document.getElementById('sources-config-region'));
+    //     ReactDOM.render(<div>
+    //<ListArticle  url="http://autonews.dev/api/articles?sourceId=1&limit=10" title="Dân trí" />
+    //<ListArticle  url="http://autonews.dev/api/articles?sourceId=2&limit=10" title="Vnexpress" />
+    //<ListArticle  url="http://autonews.dev/api/articles?sourceId=3&limit=10" title="Thanh Niên" />
+    // <ListArticle  url="http://autonews.dev/api/articles?sourceId=4&limit=10" title="Zing News" />   
+    //    </div>
+    //, document.getElementById('news-container'));
 
          $("#news-container .panel .icon").toggleClass("glyphicon-minus");
          $("#news-container .panel .icon").toggleClass("glyphicon-plus");

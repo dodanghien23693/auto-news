@@ -220,7 +220,78 @@ namespace auto_news.ApiServices
             return GetCountArticles(query);
         }
 
+        [Authorize]
+        [Route("sources/selected")]
+        public IHttpActionResult GetSelectedSourcesByCurrentUser()
+        {
+            var userId = User.Identity.GetUserId();
+            var config = _db.UserSourceConfigs.Where(i => i.UserId == userId).FirstOrDefault();
+            if (config != null)
+            {
+                var sources = JsonConvert.DeserializeObject<UserSourceConfigObject>(config.ObjectConfig);
+                if (sources != null)
+                {
+                    int[] ids = sources.Sources.Select(i => i.SourceId).ToArray();
+                    return Ok(_db.NewsSources.Where(i => ids.Contains(i.Id)).ToList());
+                }
+            }
+
+            return Ok(new { });
+        }
+
+        [Authorize]
+        [HttpPost]
+        [Route("newsSourceConfig/Add/{sourceId:int}")]
+        public IHttpActionResult AddFavoriteSource(int sourceId)
+        {
+            var userId = User.Identity.GetUserId();
+            var config = _db.UserSourceConfigs.Where(i => i.UserId == userId).FirstOrDefault();
+            if (config != null)
+            {
+                var sources = JsonConvert.DeserializeObject<UserSourceConfigObject>(config.ObjectConfig);
+                if (sources != null)
+                {
+                    if (sources.Sources.Where(i => i.SourceId == sourceId).FirstOrDefault() == null)
+                    {
+                        sources.Sources.Add(new SourceFrequencyConfig() { SourceId = sourceId });
+
+                        config.ObjectConfig = JsonConvert.SerializeObject(sources);
+                        _db.SaveChanges();
+                        return Ok();
+                    }
+                }
+            }
+            return NotFound();
+        }
+
+        [Authorize]
+        [HttpPost]
+        [Route("newsSourceConfig/Remove/{sourceId:int}")]
+        public IHttpActionResult RemoveFavoriteSource(int sourceId)
+        {
+            var userId = User.Identity.GetUserId();
+            var config = _db.UserSourceConfigs.Where(i => i.UserId == userId).FirstOrDefault();
+            if (config != null)
+            {
+                var sources = JsonConvert.DeserializeObject<UserSourceConfigObject>(config.ObjectConfig);
+                if (sources != null)
+                {
+                    var s = sources.Sources.Where(i => i.SourceId == sourceId).FirstOrDefault();
+                    if (s != null)
+                    {
+                        sources.Sources.Remove(s);
+                        config.ObjectConfig = JsonConvert.SerializeObject(sources);
+                        _db.SaveChanges();
+                        return Ok();
+                    }   
+                }
+            }
+            return NotFound();
+        }
+
         #endregion NewsSources Api
+
+
 
         private IQueryable<Article> GetFilteredArticles(ArticleQuery query)
         {
