@@ -20,6 +20,8 @@ namespace auto_news.Models
         public virtual DbSet<NewsSource> NewsSources { get; set; }
         public virtual DbSet<UserSourceConfig> UserSourceConfigs { get; set; }
 
+        public virtual DbSet<AutonewsConfigs> AutonewsConfigs { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Article>()

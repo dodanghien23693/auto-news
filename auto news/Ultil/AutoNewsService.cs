@@ -147,7 +147,7 @@ namespace auto_news.Ultil
         }
         private bool IsCrawled(string url, CrawlConfigJson configObject)
         {
-            if (AutoNewsDb.Articles.Where(a => a.OriginUrl.Equals(url)).FirstOrDefault() == null) return false;
+            if (AutoNewsDb.Articles.Where(a => a.NewsSourceId==configObject.NewsSourceId).Where(a=> a.OriginUrl.Equals(url.Trim())).FirstOrDefault() == null) return false;
             else return true;
         }
 

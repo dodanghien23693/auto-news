@@ -28,6 +28,8 @@ namespace auto_news
                 AccessTokenExpireTimeSpan = TimeSpan.FromDays(14),
                 AllowInsecureHttp = true
             };
+
+            
         }
 
         public static OAuthAuthorizationServerOptions OAuthOptions { get; private set; }

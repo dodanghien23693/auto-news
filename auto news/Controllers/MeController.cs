@@ -21,6 +21,7 @@ namespace auto_news.Controllers
 
         public MeController()
         {
+            
         }
 
         public MeController(ApplicationUserManager userManager)

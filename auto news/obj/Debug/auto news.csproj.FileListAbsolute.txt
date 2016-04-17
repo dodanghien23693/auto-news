@@ -163,8 +163,30 @@ E:\projects\auto news\auto news\bin\AngleSharp.dll
 E:\projects\auto news\auto news\bin\AngleSharp.xml
 E:\projects\auto news\auto news\bin\log4net.dll
 E:\projects\auto news\auto news\bin\log4net.xml
-E:\projects\auto news\auto news\obj\Debug\auto news.csprojResolveAssemblyReference.cache
 E:\projects\auto news\auto news\bin\FluentValidationNA.dll
 E:\projects\auto news\auto news\bin\System.Linq.Dynamic.dll
 E:\projects\auto news\auto news\bin\FluentValidationNA.xml
 E:\projects\auto news\auto news\bin\System.Linq.Dynamic.xml
+E:\projects\auto news\auto news\bin\ClearScript.V8\ClearScriptV8-32.dll
+E:\projects\auto news\auto news\bin\ClearScript.V8\ClearScriptV8-64.dll
+E:\projects\auto news\auto news\bin\ClearScript.V8\v8-ia32.dll
+E:\projects\auto news\auto news\bin\ClearScript.V8\v8-x64.dll
+E:\projects\auto news\auto news\bin\ClearScript.dll
+E:\projects\auto news\auto news\bin\JavaScriptEngineSwitcher.Core.dll
+E:\projects\auto news\auto news\bin\JavaScriptEngineSwitcher.Msie.dll
+E:\projects\auto news\auto news\bin\JavaScriptEngineSwitcher.V8.dll
+E:\projects\auto news\auto news\bin\JSPool.dll
+E:\projects\auto news\auto news\bin\MsieJavaScriptEngine.dll
+E:\projects\auto news\auto news\bin\React.Core.dll
+E:\projects\auto news\auto news\bin\React.Web.dll
+E:\projects\auto news\auto news\bin\React.Web.Mvc4.dll
+E:\projects\auto news\auto news\bin\VroomJs.dll
+E:\projects\auto news\auto news\bin\WebActivatorEx.dll
+E:\projects\auto news\auto news\bin\JSPool.xml
+E:\projects\auto news\auto news\bin\React.Core.xml
+E:\projects\auto news\auto news\bin\React.Web.xml
+E:\projects\auto news\auto news\bin\React.Web.Mvc4.xml
+E:\projects\auto news\auto news\bin\ru-ru\JavaScriptEngineSwitcher.Core.resources.dll
+E:\projects\auto news\auto news\bin\ru-ru\JavaScriptEngineSwitcher.V8.resources.dll
+E:\projects\auto news\auto news\bin\ru-ru\MsieJavaScriptEngine.resources.dll
+E:\projects\auto news\auto news\obj\Debug\auto news.csprojResolveAssemblyReference.cache

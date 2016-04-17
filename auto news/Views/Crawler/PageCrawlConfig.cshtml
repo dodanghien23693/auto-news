@@ -371,6 +371,9 @@
                                                     },
                                                     Attribute:{
                                                         type:"string"
+                                                    },
+                                                    ImageContainer:{
+                                                        type:"string"
                                                     }
                                                 }
                                             }
@@ -438,6 +441,17 @@
                             "Title": {
                                 "id": "Title",
                                 "type": "string"
+                            },
+                            "Description":{
+                                "type":"object",
+                                properties:{
+                                    "Query":{
+                                        type:"string"
+                                    },
+                                    "Excludes":{
+                                        type:"string"
+                                    }
+                                }
                             },
                             "Contents": {
                                 "id": "Contents",

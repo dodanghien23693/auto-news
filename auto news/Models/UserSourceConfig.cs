@@ -14,7 +14,7 @@ namespace auto_news.Models
 
         public string ObjectConfig { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
     }
 }

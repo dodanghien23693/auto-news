@@ -7,12 +7,13 @@ using System.Web.Mvc;
 
 namespace auto_news.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "admin")]
     public class CrawlerController : Controller
     {
         private AutoNewsDbContext _db = new AutoNewsDbContext();
         public ActionResult Index()
-        {       
+        {   
+
             return View("SourcesConfig");
         }
 
@@ -259,7 +260,7 @@ namespace auto_news.Controllers
             return View();
         }
 
-
+        
         public ActionResult ScheduleJob()
         {
             MvcApplication.AutoNewsServiceInstance.ScheduleJob();

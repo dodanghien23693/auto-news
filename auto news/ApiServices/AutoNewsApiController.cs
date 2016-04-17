@@ -13,14 +13,19 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Http.Filters;
 using System.Linq.Dynamic;
+using Microsoft.AspNet.Identity;
+using System.Threading;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace auto_news.ApiServices
 {
     [RoutePrefix("api")]
+    [AllowAnonymous]
     public class AutoNewsApiController : ApiController
     {
 
         private AutoNewsDbContext _db = new AutoNewsDbContext();
+       
 
         #region Articles Api
 
@@ -43,8 +48,16 @@ namespace auto_news.ApiServices
         [Route("articles",Name = "articles")]
         public IHttpActionResult GetArticles([FromUri] ArticleQuery query)
         {
+
+
             if (query == null) query = new ArticleQuery();
-            var articles = GetFilteredArticles(query);
+
+            IQueryable<Article> articles;
+            
+
+            articles = GetFilteredArticles(query);
+            
+            
             
             if (query.order == "desc")
             {
@@ -57,12 +70,37 @@ namespace auto_news.ApiServices
                 
             }
 
-            
+            if (query.searchString != null)
+            {
+                articles = articles.Where(i => i.Title.ToLower().Contains(query.searchString.ToLower()));                
+            }
+
             if (query.ids != null)
             {
                 var listId = Array.ConvertAll(query.ids.Split(','), int.Parse);
                 articles = from a in articles where listId.Contains(a.Id) select a;
 
+            }
+            
+            
+            if (User.Identity.IsAuthenticated)
+            {
+                var userId = User.Identity.GetUserId();
+                var config = _db.UserSourceConfigs.Where(i => i.UserId == userId).FirstOrDefault();
+                if (config == null)
+                {
+                    config = CreateDefaultUserSourceConfig(User.Identity.GetUserId());
+
+                }
+
+                var sources = JsonConvert.DeserializeObject<UserSourceConfigObject>(config.ObjectConfig);
+
+                var sourceIds = sources.Sources.Select(i => i.SourceId).ToList();
+                articles = articles.Where(i => sourceIds.Contains(i.NewsSourceId));
+                //foreach(var source in sources.Sources)
+                //{
+
+                //}
             }
 
             articles = articles.Skip(query.limit * (query.page-1)).Take(query.limit);
@@ -206,6 +244,51 @@ namespace auto_news.ApiServices
             return articles;
         }
 
+        private UserSourceConfig CreateDefaultUserSourceConfig(string userId)
+        {
+            UserSourceConfig config = new UserSourceConfig();
+
+            config.UserId = userId;
+            var defaultConfig = _db.AutonewsConfigs.Where(i => i.KeyName == "DefaultUserSourceConfig").FirstOrDefault();
+            if (defaultConfig != null)
+            {
+                config.ObjectConfig = defaultConfig.Value;
+            }
+            _db.UserSourceConfigs.Add(config);
+            _db.SaveChanges();
+            return config;
+        }
+
+
+        private IQueryable<Article> GetFilteredArticlesByCurrentUser(ArticleQuery query)
+        {
+            var config = _db.UserSourceConfigs.Where(i => i.UserId == User.Identity.GetUserId()).FirstOrDefault();
+            if (config == null)
+            {
+                config = CreateDefaultUserSourceConfig(User.Identity.GetUserId());
+            }
+
+            var articles = _db.Articles.Select(i => i);
+            if (query.sourceId != null)
+            {
+                articles = articles.Where(i => i.NewsSourceId == query.sourceId);
+            }
+            if (query.categoryId != null)
+            {
+                articles = articles.Where(i => i.CategoryId == query.categoryId);
+            }
+            if (query.fromDateTime != null)
+            {
+                articles = articles.Where(i => i.CreateTime >= query.fromDateTime);
+            }
+            if (query.toDateTime != null)
+            {
+                articles = articles.Where(i => i.CreateTime <= query.toDateTime);
+            }
+            return articles;
+        }
+
+        
         public static object GetFilteredObject(string[] fields)
         {
             dynamic result = new ExpandoObject();
@@ -253,8 +336,22 @@ namespace auto_news.ApiServices
         public DateTime? toDateTime { get; set; }
         public string sortBy { get; set; } = "Id";
         public string order { get; set; } = "desc";
+
+        public string searchString { get; set; }
         public int limit { get; set; } = 10;
 
         public int page { get; set; } = 1;
     }
+
+    public class UserSourceConfigObject
+    {
+        public List<SourceFrequencyConfig> Sources { get; set; }
+    }
+
+    public class SourceFrequencyConfig
+    {
+        public int SourceId { get; set; }
+        public int Frequency { get; set; }
+    }
+
 }

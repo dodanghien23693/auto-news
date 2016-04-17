@@ -26,7 +26,7 @@ namespace auto_news
             {
                 AuthorizationFilters = new[]
                 {
-                    new AuthorizationFilter{ Users = "dodanghien.23693@gmail.com", Roles = "admin" }
+                    new AuthorizationFilter{ Users = "admin@gmail.com", Roles = "admin" }
                 }
             };
 
