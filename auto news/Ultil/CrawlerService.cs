@@ -1,11 +1,14 @@
 ﻿using AngleSharp.Dom.Html;
 using AngleSharp.Parser.Html;
 using auto_news;
-using auto_news.Ultil;
+using auto_news.Models;
+using auto_news.Config;
 using Crawl_Config;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -15,9 +18,139 @@ namespace Crawl_News_Module
 {
     public class CrawlerService
     {
-        public object MVCAppllication { get; private set; }
+        public static AutoNewsDbContext AutoNewsDb = new AutoNewsDbContext();
 
-        public List<LinkConfig> CrawlLinkFromUrl(string url, CrawlLinkConfig crawlLinkConfig,int categoryId)
+        public void DoCrawl(CrawlConfigJson configObject)
+        {
+
+            if (configObject.Method.MethodId == CrawlMethodId.SingleUrl)
+            {
+                //dynamic description = JsonConvert.DeserializeObject(configObject.Description);
+                string url = configObject.Method.Description.Url;
+                var article = DoCrawlSingleUrl(url, configObject.CrawlPageConfig);
+
+                if (article != null)
+                {
+                    AddArticle(article, configObject, new LinkConfig() { Url = url, CategoryId = configObject.CategoryId });
+                }
+            }
+            else if (configObject.Method.MethodId == CrawlMethodId.MultiUrl)
+            {
+                JArray urls = configObject.Method.Description.Urls;
+
+                for (var i = 0; i < urls.Count; i++)
+                {
+                    string url = urls[i].ToString();
+                    if (IsCrawled(url, configObject)) break;
+                    else
+                    {
+                        var article = DoCrawlSingleUrl(url, configObject.CrawlPageConfig);
+                        if (article != null)
+                        {
+                            AddArticle(article, configObject, new LinkConfig() { Url = url, CategoryId = configObject.CategoryId });
+                        }
+
+                    }
+                }
+                //var articles = Crawler.DoCrawlMultiUrl(urls.Select(i => (string)i).ToArray(), configObject.CrawlPageConfig);
+            }
+            else if (configObject.Method.MethodId == CrawlMethodId.GeneratedLinks)
+            {
+                ScheduleConfig schedule = configObject.ScheduleConfig;
+
+                dynamic Params = configObject.Method.Description.Params;
+
+                List<LinkConfig> links = new List<LinkConfig>();
+                GenerateLinkFromParams(0, Params, new string[Params.Count], configObject.CategoryId, links);
+
+                List<LinkConfig> crawledLinks = new List<LinkConfig>();
+
+                var i = 0;
+
+                while (i < links.Count)
+                {
+                    var HasNewArticle = true;
+                    //var link = links[i];
+                    List<LinkConfig> linksConfig = CrawlLinkFromUrl(links[i].Url, configObject.Method.Description.CrawlLinkConfig.ToObject<CrawlLinkConfig>(), links[i].CategoryId);
+                    var j = 0;
+                    while (HasNewArticle && j < linksConfig.Count)
+                    {
+                        var link = linksConfig[j];
+                        link.Url = configObject.Method.Description.BaseUrl + link.Url;
+                        if (IsCrawled(link.Url, configObject))
+                        {
+                            HasNewArticle = false;
+                        }
+                        else
+                        {
+                            var article = DoCrawlSingleUrl(link.Url, configObject.CrawlPageConfig);
+
+                            if (article != null)
+                            {
+                                article.ImageUrl = link.ImageUrl;
+                                if (article.ImageUrl.Trim() == "")
+                                {
+                                    article.ImageUrl = GetFirstImageUrl(article.Content);
+                                }
+                                AddArticle(article, configObject, link);
+                            }
+                        }
+                        j++;
+                    }
+                    i++;
+                }
+            }
+        }
+
+        private string GetFirstImageUrl(string content)
+        {
+            string imageUrl = "";
+            Regex regex = new Regex("<img [^>]*src=\"([^ \"]+)");
+            Match match = regex.Match(content);
+            if (match.Success)
+            {
+                var s = match.Value;
+                imageUrl = s.Substring(s.IndexOf("src=\"") + 5);
+            }
+            return imageUrl;
+        }
+
+        public int AddArticle(CrawlArticle article, CrawlConfigJson config, LinkConfig link)
+        {
+            try
+            {
+                AutoNewsDb.Articles.Add(new Article()
+                {
+                    CrawlConfigId = config.Id,
+                    NewsSourceId = config.NewsSourceId,
+                    Title = article.Title,
+                    Description = article.Description,
+                    ImageUrl = article.ImageUrl,
+                    RawContent = article.Content,
+                    CategoryId = link.CategoryId,
+                    OriginUrl = link.Url,
+                    CreateTime = DateTime.UtcNow,
+
+                    //Category = AutoNewsDb.Categories.FirstOrDefault(c => c.Id == link.CategoryId),
+                    //NewsSource = AutoNewsDb.NewsSources.FirstOrDefault(n => n.Id == config.NewsSourceId)
+                });
+
+                return AutoNewsDb.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                MvcApplication.log.Error("Add Article Error", ex);
+            }
+            return 0;
+
+        }
+        private bool IsCrawled(string url, CrawlConfigJson configObject)
+        {
+            if (AutoNewsDb.Articles.Where(a => a.NewsSourceId == configObject.NewsSourceId).Where(a => a.OriginUrl.Equals(url.Trim())).FirstOrDefault() == null) return false;
+            else return true;
+        }
+
+        public List<LinkConfig> CrawlLinkFromUrl(string url, CrawlLinkConfig crawlLinkConfig, int categoryId)
         {
             List<LinkConfig> listLinkConfig = new List<LinkConfig>();
             //CrawlLinkConfig crawlConfig = configObject.Method.Description.CrawlLinkConfig.ToObject<CrawlLinkConfig>();
@@ -36,15 +169,15 @@ namespace Crawl_News_Module
                 foreach (var query in imageContainer.Split(','))
                 {
                     var imageElement = document.QuerySelector(query + " a[href='" + articleUrl + "'] img");
-                    
+
                     if (imageElement != null)
                     {
                         imageUrl = imageElement.GetAttribute("src");
                         break;
                     }
                 }
-                
-                listLinkConfig.Add(new LinkConfig() { ImageUrl = imageUrl, Url = articleUrl,CategoryId = categoryId });
+
+                listLinkConfig.Add(new LinkConfig() { ImageUrl = imageUrl, Url = articleUrl, CategoryId = categoryId });
                 //urls.Add(link.GetAttribute(crawlLinkConfig.Attribute));
 
             }
@@ -118,7 +251,7 @@ namespace Crawl_News_Module
             return value.Substring(0, length - 3) + "...";
         }
 
-        public  CrawlArticle DoCrawlSingleUrl(string url, CrawlPageConfig crawlPageConfig)
+        public CrawlArticle DoCrawlSingleUrl(string url, CrawlPageConfig crawlPageConfig)
         {
             try
             {
@@ -144,11 +277,11 @@ namespace Crawl_News_Module
                     }
                     description = RemoveHtmlTag(descriptionElement.InnerHtml).Trim();
                 }
-                
-                
+
+
 
                 var contents = "";
-                
+
                 foreach (var contentQuery in crawlPageConfig.Contents)
                 {
                     var rawContent = document.QuerySelector(contentQuery.Query);
@@ -172,7 +305,7 @@ namespace Crawl_News_Module
                     //        imageUrl = rawContent.QuerySelector("img").GetAttribute("src");
                     //    }
                     //}
-     
+
                 }
 
                 contents = RemoveExtraContent(contents);
@@ -181,7 +314,7 @@ namespace Crawl_News_Module
                 if (description == null || description == "" || description.Length < 100)
                 {
                     //description = (contents.Length > 300) ? contents.Substring(0, 500) : contents;
-                    description = TruncateAtWord(RemoveHtmlTag(contents).Replace(title,""), 200);
+                    description = TruncateAtWord(RemoveHtmlTag(contents).Replace(title, ""), 200);
                 }
 
                 //string imageUrl = "";
@@ -195,26 +328,26 @@ namespace Crawl_News_Module
 
                 return new CrawlArticle() { Content = contents, Title = title, Description = description };
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.Write(ex.Message);
             }
 
 
             return null;
-            
+
 
         }
 
 
         private static string[] _filterList = { "script", "input[type='hidden']", "iframe", "style" };
 
-        public HtmlParser  _htmlParser = new HtmlParser();
+        public HtmlParser _htmlParser = new HtmlParser();
 
         public string RemoveExtraContent(string content)
         {
-            var document = _htmlParser.Parse("<div id='autonews-filter-content'>"+content+"</div>");
-            foreach(var e in _filterList)
+            var document = _htmlParser.Parse("<div id='autonews-filter-content'>" + content + "</div>");
+            foreach (var e in _filterList)
             {
                 foreach (var child in document.QuerySelectorAll(e))
                 {
@@ -238,7 +371,7 @@ namespace Crawl_News_Module
                 sr = new StreamReader(myResponse.GetResponseStream(), System.Text.Encoding.UTF8);
                 return sr.ReadToEnd();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
 
             }

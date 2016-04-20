@@ -22,19 +22,22 @@ namespace auto_news.Models
 
         public virtual DbSet<AutonewsConfigs> AutonewsConfigs { get; set; }
 
+        public virtual DbSet<Comment> Comments { get; set; }
+
+        public virtual DbSet<Rating> Ratings { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Article>()
-                .Property(e => e.ImageUrl)
-                .IsUnicode(true);
+            //modelBuilder.Entity<Article>()
+            //    .Property(e => e.ImageUrl)
+            //    .IsUnicode(true);
 
-            modelBuilder.Entity<Article>()
-                .Property(e => e.RawContent)
-                .IsUnicode(true);
+            //modelBuilder.Entity<Article>()
+            //    .Property(e => e.RawContent)
+            //    .IsUnicode(true);
 
-            modelBuilder.Entity<Article>()
-                .Property(e => e.FormatedContent)
-                .IsUnicode(true);
+            //modelBuilder.Entity<Article>()
+            //    .Property(e => e.FormatedContent)
+            //    .IsUnicode(true);
 
             modelBuilder.Entity<AspNetRole>()
                 .HasMany(e => e.AspNetUsers)
@@ -46,9 +49,9 @@ namespace auto_news.Models
             //    .WithRequired(e => e.Category)
             //    .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<CrawlConfig>()
-                .Property(e => e.Description)
-                .IsUnicode(true);
+            //modelBuilder.Entity<CrawlConfig>()
+            //    .Property(e => e.Description)
+            //    .IsUnicode(true);
 
             //modelBuilder.Entity<NewsSource>()
             //    .HasMany(e => e.Articles)

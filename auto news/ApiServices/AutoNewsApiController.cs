@@ -226,16 +226,19 @@ namespace auto_news.ApiServices
         {
             var userId = User.Identity.GetUserId();
             var config = _db.UserSourceConfigs.Where(i => i.UserId == userId).FirstOrDefault();
-            if (config != null)
+            if (config == null)
             {
-                var sources = JsonConvert.DeserializeObject<UserSourceConfigObject>(config.ObjectConfig);
-                if (sources != null)
-                {
-                    int[] ids = sources.Sources.Select(i => i.SourceId).ToArray();
-                    return Ok(_db.NewsSources.Where(i => ids.Contains(i.Id)).ToList());
-                }
+                config = CreateDefaultUserSourceConfig(userId);
             }
 
+            var sources = JsonConvert.DeserializeObject<UserSourceConfigObject>(config.ObjectConfig);
+            if (sources != null)
+            {
+                int[] ids = sources.Sources.Select(i => i.SourceId).ToArray();
+                return Ok(_db.NewsSources.Where(i => ids.Contains(i.Id)).ToList());
+            }
+            
+            
             return Ok(new { });
         }
 

@@ -1,0 +1,227 @@
+﻿@model auto_news.Models.Article
+<br /><br /><br />
+@*<div class="container">
+    <div class="row col-sm-offset-4">
+        <div class="col-sm-6">
+            <input type="text" id="search-news-input" class="form-control" placeholder="Nhập từ khóa tìm kiếm" />
+        </div>
+    </div>
+</div>*@
+<br />
+    <div class="row">
+        <div class="col-sm-8 col-sm-offset-2">
+            <section id="Article">
+                <div>
+                    <div id="Title">
+                        <h3>@Model.Title</h3>
+                    </div>
+                    <div id="Content" style="font-size: 18px;">
+                        @Html.Raw(Model.RawContent)
+                    </div>
+                </div>
+                <hr />
+                <span id="rating" style="display:inline-block"></span>
+                <span class="fb-like" data-href="/detailarticle/@Model.Id" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></span>
+                <br /><br />
+                <div id="login-required" style="display:none"><a href="#">Đăng nhập</a> để bình luận và rating!</div>
+                <br />
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Bình luận
+                    </div>
+                    <div class="panel-body">
+                        <div id="comments-container">
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>    
+    </div>
+<br />
+<br />
+<br />
+
+<div id="fb-root"></div>
+<script>
+(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v2.6&appId=799719793397460";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+@section Scripts{
+    
+<script src="~/Scripts/react/react.min.js"></script>
+<script src="~/Scripts/react/react-dom.min.js"></script>
+
+@*<script  src="@Url.Content("~/Scripts/views/home/detail-article.jsx")"></script>*@
+
+<link href="~/Scripts/Viima-jquery-comments/css/jquery-comments.css" rel="stylesheet" />
+<script src="~/Scripts/Viima-jquery-comments/js/jquery-comments.min.js"></script>
+<link href="~/Scripts/rateyo v2.0.1/jquery.rateyo.min.css" rel="stylesheet" />
+<script src="~/Scripts/rateyo v2.0.1/jquery.rateyo.min.js"></script>
+    
+    <script>
+
+        function timeSince(timeStamp) {
+            var now = new Date(),
+                secondsPast = (now.getTime() - timeStamp.getTime() ) / 1000;
+            if(secondsPast < 60){
+                return parseInt(secondsPast) + ' giây trước';
+            }
+            if(secondsPast < 3600){
+                return parseInt(secondsPast/60) + ' phút trước';
+            }
+            if(secondsPast <= 86400){
+                return parseInt(secondsPast/3600) + ' giờ trước';
+            }
+            if(secondsPast > 86400){
+                var day = timeStamp.getDate();
+                var month = timeStamp.toDateString().match(/ [a-zA-Z]*/)[0].replace(" ","");
+                var year = timeStamp.getFullYear() == now.getFullYear() ? "" :  " "+timeStamp.getFullYear();
+                return day + " " + month + year;
+            }
+        }
+
+        $(document).ready(function () {
+            var isAdmin =  ("@User.IsInRole("admin")" == "True");
+
+            var isLogined = "@User.Identity.IsAuthenticated"=="True";
+
+            if(isLogined){
+                var ratingArticle = $("#rating").rateYo({
+                    fullStar:true
+                });
+
+                $.ajax({
+                    type: 'get',
+                    url: '/api/articles/'+@Model.Id+'/ratings',
+                    success: function (data) {
+                    
+                        ratingArticle.rateYo("rating", data.ratePoint);   
+
+                        $("#rating").rateYo("option", "onSet", function (rating) {
+                
+                            $.ajax({
+                                type: 'post',
+                                contentType:"application/json",
+                                url: '/api/articles/'+@Model.Id+'/ratings',
+                                data: JSON.stringify({articleId:@Model.Id, ratePoint : rating}),
+                                success: function (data) {
+                        
+                                },
+                                error: function(xhr, status, err){
+
+                                }
+                            });
+                        });
+                    
+                    },
+                    error: function(e){
+
+                    }
+                });
+            }
+            else{
+                $("#login-required").show();
+                $("#login-required a").attr("href","/account/login?returnUrl="+window.location);
+            }
+            
+
+             //returns a jQuery Element
+
+            $("#comments-container").comments({
+                //currentUserIsAdmin: isAdmin,
+                
+                textareaPlaceholderText: "Hãy đưa ra ý kiến của cá nhân bạn",
+                sendText: 'Gửi',
+                replyText: 'Phản hồi',
+                editText: 'Sửa',
+                editedText: 'Đã được chỉnh sửa',        
+                saveText: 'Cập nhật',
+                deleteText: 'Xóa',
+                youText: 'Bạn',
+                noCommentsText: 'Chưa có bình luận nào',
+                popularText: '',
+                oldestText: 'Cũ nhất',
+                newestText: 'Mới nhất',
+
+                readOnly: !isLogined,
+                enableReplying: false,
+                getComments: function (success, error) {
+
+                    $.ajax({
+                        type: 'get',
+                        url: '/api/articles/'+@Model.Id+'/comments',
+                        success: function (commentsArray) {
+                            success(commentsArray)
+                        },
+                        error: function(e){
+
+                        }
+                    });
+                },
+                postComment: function (commentJSON, success, error) {
+                    commentJSON.articleId = @Model.Id;
+                    $.ajax({
+                        type: 'post',
+                        url: '/api/comments',
+                        data: commentJSON,
+                        success: function(comment) {
+                            comment.createByCurrentUser = true;
+                            success(comment)
+                        },
+                        error: function(e){
+
+                        }
+                    });
+                },
+                putComment: function(commentJSON, success, error) {
+                    $.ajax({
+                        type: 'put',
+                        url: '/api/comments/' + commentJSON.id,
+                        data: commentJSON,
+                        success: function(comment) {
+                            comment.createByCurrentUser = true;
+                            success(comment)
+                        },
+                        error: function(e){
+
+                        }
+                    });
+                },
+                deleteComment: function(commentJSON, success, error) {
+                    $.ajax({
+                        type: 'delete',
+                        url: '/api/comments/' + commentJSON.id,
+                        success: success,
+                        error: function(e){
+
+                        }
+                    });
+                },
+                fieldMappings: {
+                    id: 'id',
+                    //parent: 'parent',
+                    created: 'createDateTime',
+                    //modified: 'modifyDateTime',
+                    content: 'content',
+                    fullname: 'userId',
+                    profileURL: 'profile_url',
+                    profilePictureURL: 'profile_picture_url',
+                    createdByCurrentUser: 'createByCurrentUser',
+                },
+                timeFormatter:function(time){
+                    //return new Date(time).toLocaleDateString(); 
+                    var d = new Date(Date.parse(time));
+                    return timeSince(d);
+                }
+            });
+        });
+
+    </script>
+}
+

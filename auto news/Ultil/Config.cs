@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace auto_news.Ultil
+namespace auto_news.Config
 {
     public static class CrawlMethodId
     {

@@ -255,6 +255,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiServices\CommentRateApiController.cs" />
     <Compile Include="ApiServices\AutoNewsApiController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -305,6 +306,8 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Rating.cs" />
+    <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\Article.cs" />
     <Compile Include="Models\AspNetRole.cs" />
     <Compile Include="Models\AspNetUser.cs" />
@@ -322,10 +325,9 @@
     <Compile Include="Results\ChallengeResult.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Ultil\AutoNewsService.cs" />
-    <Compile Include="Ultil\RSAEncryption.cs" />
     <Compile Include="Ultil\CrawlConfigModule.cs" />
     <Compile Include="Ultil\CrawlerService.cs" />
-    <Compile Include="Ultil\Ultil.cs" />
+    <Compile Include="Ultil\Config.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
@@ -378,6 +380,7 @@
     <Content Include="Scripts\EasyAutocomplete-1.3.3\maps\easy-autocomplete.min.css.map" />
     <Content Include="Scripts\EasyAutocomplete-1.3.3\maps\easy-autocomplete.themes.css.map" />
     <Content Include="Scripts\EasyAutocomplete-1.3.3\maps\easy-autocomplete.themes.min.css.map" />
+    <Content Include="ClassDiagram1.cd" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\datatable\dataTables.bootstrap.min.css" />
     <Content Include="Scripts\datatable\jquery.dataTables.min.css" />
@@ -530,6 +533,10 @@
     <Content Include="Scripts\knockout.validation.debug.js" />
     <Content Include="Scripts\knockout.validation.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\rateyo v2.0.1\jquery.rateyo.css" />
+    <Content Include="Scripts\rateyo v2.0.1\jquery.rateyo.js" />
+    <Content Include="Scripts\rateyo v2.0.1\jquery.rateyo.min.css" />
+    <Content Include="Scripts\rateyo v2.0.1\jquery.rateyo.min.js" />
     <Content Include="Scripts\react\react-dom-server.js" />
     <Content Include="Scripts\react\react-dom-server.min.js" />
     <Content Include="Scripts\react\react-dom.js" />
@@ -543,6 +550,10 @@
     <Content Include="Scripts\sammy-0.7.4.js" />
     <Content Include="Scripts\sammy-0.7.4.min.js" />
     <Content Include="Scripts\views\home\home.jsx" />
+    <Content Include="Scripts\Viima-jquery-comments\css\jquery-comments.css" />
+    <Content Include="Scripts\Viima-jquery-comments\data\comments-data.js" />
+    <Content Include="Scripts\Viima-jquery-comments\js\jquery-comments.js" />
+    <Content Include="Scripts\Viima-jquery-comments\js\jquery-comments.min.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Scripts\app\_run.js" />
     <Content Include="Scripts\app\app.datamodel.js" />
@@ -617,6 +628,11 @@
     <Content Include="Views\Crawler\CategoriesConfig.cshtml" />
     <Content Include="Views\Home\_Layout.cshtml" />
     <Content Include="Views\Home\_ViewStart.cshtml" />
+    <Content Include="Views\Home\DetailArticle.cshtml" />
+    <Content Include="Scripts\rateyo v2.0.1\jquery.rateyo.less" />
+    <Content Include="Scripts\rateyo v2.0.1\jquery.rateyo.min.css.map" />
+    <Content Include="Scripts\rateyo v2.0.1\jquery.rateyo.min.js.map" />
+    <Content Include="Scripts\rateyo v2.0.1\LICENSE" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

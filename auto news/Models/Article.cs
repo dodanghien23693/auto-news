@@ -38,5 +38,6 @@ namespace auto_news.Models
         //public virtual Category Category { get; set; }
 
         //public virtual NewsSource NewsSource { get; set; }
+
     }
 }

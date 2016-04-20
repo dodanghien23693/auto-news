@@ -43,6 +43,20 @@
 
     <script src="~/Scripts/bootstrap-3.3.6-dist/js/bootstrap.min.js"></script>
    
+    <script>
+        
+        $(document).ready(function () {
+            try{
+                $("#logoutForm input[name='returnUrl']").val(window.location);
+
+                $("#loginLink").attr("href", "/account/login?returnUrl=" + window.location);
+            }
+            catch (e) {
+
+            }
+        });
+    
+    </script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

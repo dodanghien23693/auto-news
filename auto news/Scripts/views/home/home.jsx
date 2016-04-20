@@ -55,7 +55,7 @@ var SourcesConfig = React.createClass({
 
                     list: {
                         match: {
-                            enabled: true
+                            enabled: false
                         },
                         onSelectItemEvent: function () {
                             var sourceId = $("#sources-config").getSelectedItemData().id;
@@ -80,7 +80,7 @@ var SourcesConfig = React.createClass({
             cache: false,
             success: function (data) {
                 this.setState({ sources: this.state.sources, selectedSources: data });
-     
+                
             }.bind(this),
             error: function (xhr, status, err) {
                 console.error(this.props.url, status, err.toString());
@@ -104,6 +104,8 @@ var SourcesConfig = React.createClass({
                 var newArray = this.state.selectedSources;
                 newArray.push(source);
                 this.setState({ sources: this.state.sources, selectedSources: newArray });
+                $("#sources-config").val("");
+                this.newSourceId = -1;
 
                 $.ajax({
                     url: "/api/newsSourceConfig/Add/"+source.id,
@@ -239,8 +241,6 @@ var ListArticle = React.createClass({
                 </div>
                
             </div>
-          
-                
                 );
             }
         }
@@ -283,10 +283,10 @@ var Article = React.createClass({
                     <img src={this.props.data.imageUrl} className="img-responsive article-feature-image pull-left" width="150px"/>
                 </a>
                 <div className="article-info clearfix" style={{marginLeft: 160}}>
-                    <h3 style={{marginTop: 0,fontSize:18}}><a href={this.props.data.originUrl} className="article-title" target="_blank">{this.props.data.title}</a></h3>
+                    <h3 style={{marginTop: 0,fontSize:18}}><a href={"/detailarticle/"+this.props.data.id} className="article-title" target="_blank">{this.props.data.title}</a></h3>
                     <div className="source-info" style={{fontSize:13}}>{sourceName} - {relativeTime+"    "}‎ 
                     
-                     <a href={"https://facebook.com/sharer.php?u="+this.props.data.originUrl} title="" target="_blank" class="btn"><img width="13px" title="Chia sẻ trên Facebook" src="/Content/images/facebook.png"/></a>
+                     <a href={"https://facebook.com/sharer.php?u="+window.location.host+"/detailarticle/"+this.props.data.id} title="" target="_blank" class="btn"><img width="13px" title="Chia sẻ trên Facebook" src="/Content/images/facebook.png"/></a>
                     </div>
                     <div className="article-description" style={{marginTop: 10, fontSize: 14}}>{description}</div>
                 </div>

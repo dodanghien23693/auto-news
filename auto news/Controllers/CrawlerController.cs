@@ -267,6 +267,5 @@ namespace auto_news.Controllers
             return Json(new { status = "Ok" }, JsonRequestBehavior.AllowGet);   
         }
 
-
     }
 }
