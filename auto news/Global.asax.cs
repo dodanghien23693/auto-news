@@ -1,5 +1,4 @@
-﻿using auto_news.Config;
-using System.Web;
+﻿using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;

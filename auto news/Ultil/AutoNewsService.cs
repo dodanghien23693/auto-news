@@ -1,6 +1,5 @@
-﻿using auto_news.Config;
-using auto_news.Models;
-using Crawl_Config;
+﻿using auto_news.Models;
+using Config_Model;
 using Crawl_News_Module;
 using Hangfire;
 using Newtonsoft.Json;

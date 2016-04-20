@@ -296,7 +296,6 @@
     <Compile Include="Controllers\CrawlerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="Controllers\MeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -325,9 +324,8 @@
     <Compile Include="Results\ChallengeResult.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Ultil\AutoNewsService.cs" />
-    <Compile Include="Ultil\CrawlConfigModule.cs" />
+    <Compile Include="Ultil\ConfigModel.cs" />
     <Compile Include="Ultil\CrawlerService.cs" />
-    <Compile Include="Ultil\Config.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />

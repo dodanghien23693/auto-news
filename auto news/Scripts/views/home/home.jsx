@@ -318,13 +318,9 @@ var Article = React.createClass({
         }
 
         
-
-    
-
-
      $(document).ready(function(){
 
-         ReactDOM.render(<SourcesConfig></SourcesConfig>, document.getElementById('sources-config-region'));
+        
     //     ReactDOM.render(<div>
     //<ListArticle  url="http://autonews.dev/api/articles?sourceId=1&limit=10" title="Dân trí" />
     //<ListArticle  url="http://autonews.dev/api/articles?sourceId=2&limit=10" title="Vnexpress" />
@@ -333,6 +329,17 @@ var Article = React.createClass({
     //    </div>
     //, document.getElementById('news-container'));
 
+         if (window.isLogined) {
+             ReactDOM.render(
+             <SourcesConfig></SourcesConfig>, document.getElementById('sources-config-region'));
+
+         }
+         else {
+             $("#config-region").hide();
+         }
+
+         var hash = window.location.hash;
+         $("a[href='" + hash + "']").trigger("click");
          $("#news-container .panel .icon").toggleClass("glyphicon-minus");
          $("#news-container .panel .icon").toggleClass("glyphicon-plus");
          $("#news-container .panel .panel-body").hide();
@@ -341,7 +348,7 @@ var Article = React.createClass({
         $("#category-region a").click(function (e) {
             $("#category-region a").removeClass("active");
                 $(this).addClass("active");
-                e.preventDefault();
+                //e.preventDefault();
                 var categoryId = $(this).attr("categoryId");
                 var title = $(this).text();
                 var url = "http://autonews.dev/api/categories/"+categoryId+"/articles?limit=10";

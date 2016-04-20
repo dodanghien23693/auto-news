@@ -2,8 +2,6 @@
 using AngleSharp.Parser.Html;
 using auto_news;
 using auto_news.Models;
-using auto_news.Config;
-using Crawl_Config;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -13,6 +11,7 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using Config_Model;
 
 namespace Crawl_News_Module
 {
