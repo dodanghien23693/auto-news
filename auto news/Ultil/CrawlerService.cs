@@ -12,16 +12,16 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Config_Model;
+using NLog;
 
 namespace Crawl_News_Module
 {
     public class CrawlerService
     {
         public static AutoNewsDbContext AutoNewsDb = new AutoNewsDbContext();
-
+        private static Logger logger = LogManager.GetCurrentClassLogger();
         public void DoCrawl(CrawlConfigJson configObject)
         {
-
             if (configObject.Method.MethodId == CrawlMethodId.SingleUrl)
             {
                 //dynamic description = JsonConvert.DeserializeObject(configObject.Description);
@@ -71,6 +71,7 @@ namespace Crawl_News_Module
                     var HasNewArticle = true;
                     //var link = links[i];
                     List<LinkConfig> linksConfig = CrawlLinkFromUrl(links[i].Url, configObject.Method.Description.CrawlLinkConfig.ToObject<CrawlLinkConfig>(), links[i].CategoryId);
+                    
                     var j = 0;
                     while (HasNewArticle && j < linksConfig.Count)
                     {
@@ -138,15 +139,25 @@ namespace Crawl_News_Module
             }
             catch (Exception ex)
             {
-                MvcApplication.log.Error("Add Article Error", ex);
+                logger.Trace(ex.StackTrace,"Lỗi thêm CrawlArticle:{0}", article);
             }
             return 0;
 
         }
         private bool IsCrawled(string url, CrawlConfigJson configObject)
         {
-            if (AutoNewsDb.Articles.Where(a => a.NewsSourceId == configObject.NewsSourceId).Where(a => a.OriginUrl.Equals(url.Trim())).FirstOrDefault() == null) return false;
-            else return true;
+            try
+            {
+                if (AutoNewsDb.Articles.Where(a => a.NewsSourceId == configObject.NewsSourceId).Where(a => a.OriginUrl.Equals(url.Trim())).FirstOrDefault() == null) return false;
+                else return true;
+            }
+            catch(Exception ex)
+            {
+                logger.Trace(ex, "Lỗi khi thực hiện IsCrawled({0},configObject)", url);
+                throw;         
+            }
+            
+            
         }
 
         public List<LinkConfig> CrawlLinkFromUrl(string url, CrawlLinkConfig crawlLinkConfig, int categoryId)
@@ -154,34 +165,40 @@ namespace Crawl_News_Module
             List<LinkConfig> listLinkConfig = new List<LinkConfig>();
             //CrawlLinkConfig crawlConfig = configObject.Method.Description.CrawlLinkConfig.ToObject<CrawlLinkConfig>();
             var parser = new HtmlParser();
-            var document = parser.Parse(GetHtmlFromUrl(url));
-            var links = document.QuerySelectorAll(crawlLinkConfig.LinkQuery);
-
-            List<string> urls = new List<string>();
-            foreach (var link in links)
+            var html = GetHtmlFromUrl(url);
+            if (html != null)
             {
-                var articleUrl = link.GetAttribute(crawlLinkConfig.Attribute);
+                var document = parser.Parse(html);
+                var links = document.QuerySelectorAll(crawlLinkConfig.LinkQuery);
 
-                string imageContainer = "";
-                if (crawlLinkConfig.ImageContainer != null) imageContainer = crawlLinkConfig.ImageContainer;
-                var imageUrl = "";
-                foreach (var query in imageContainer.Split(','))
+                foreach (var link in links)
                 {
-                    var imageElement = document.QuerySelector(query + " a[href='" + articleUrl + "'] img");
+                    var articleUrl = link.GetAttribute(crawlLinkConfig.Attribute);
 
-                    if (imageElement != null)
+                    string imageContainer = "";
+                    if (crawlLinkConfig.ImageContainer != null) imageContainer = crawlLinkConfig.ImageContainer;
+                    var imageUrl = "";
+                    foreach (var query in imageContainer.Split(','))
                     {
-                        imageUrl = imageElement.GetAttribute("src");
-                        break;
+                        var imageElement = document.QuerySelector(query + " a[href='" + articleUrl + "'] img");
+
+                        if (imageElement != null)
+                        {
+                            imageUrl = imageElement.GetAttribute("src");
+                            break;
+                        }
                     }
+
+                    listLinkConfig.Add(new LinkConfig() { ImageUrl = imageUrl, Url = articleUrl, CategoryId = categoryId });
+                    //urls.Add(link.GetAttribute(crawlLinkConfig.Attribute));
+
                 }
 
-                listLinkConfig.Add(new LinkConfig() { ImageUrl = imageUrl, Url = articleUrl, CategoryId = categoryId });
-                //urls.Add(link.GetAttribute(crawlLinkConfig.Attribute));
-
+                return listLinkConfig.GroupBy(i => i.Url).Select(i => i.First()).ToList();
             }
 
             return listLinkConfig;
+            
         }
 
         public void GenerateLinkFromParams(int i, dynamic pas, string[] Urls, int categoryId, List<LinkConfig> links)
@@ -256,86 +273,81 @@ namespace Crawl_News_Module
             {
                 //Thread.Sleep(300);
                 var parser = new HtmlParser();
-                var document = parser.Parse(GetHtmlFromUrl(url));
-                var title = document.QuerySelector(crawlPageConfig.Title).TextContent;
-
-                string description = "";
-
-                var descriptionElement = document.QuerySelector((string)crawlPageConfig.Description.Query);
-                if (descriptionElement != null)
+                var html = GetHtmlFromUrl(url);
+                if (html != null)
                 {
-                    if ((string)crawlPageConfig.Description.Excludes != null && ((string)crawlPageConfig.Description.Excludes) != "")
+                    var document = parser.Parse(html);
+                    var title = document.QuerySelector(crawlPageConfig.Title).TextContent;
+
+                    string description = "";
+
+                    var descriptionElement = document.QuerySelector((string)crawlPageConfig.Description.Query);
+                    if (descriptionElement != null)
                     {
-                        foreach (var e in ((string)crawlPageConfig.Description.Excludes).Split(','))
+                        if ((string)crawlPageConfig.Description.Excludes != null && ((string)crawlPageConfig.Description.Excludes) != "")
                         {
-                            foreach (var child in descriptionElement.QuerySelectorAll(e))
+                            foreach (var e in ((string)crawlPageConfig.Description.Excludes).Split(','))
                             {
-                                child.Remove();
+                                foreach (var child in descriptionElement.QuerySelectorAll(e))
+                                {
+                                    child.Remove();
+                                }
                             }
                         }
+                        description = RemoveHtmlTag(descriptionElement.InnerHtml).Trim();
                     }
-                    description = RemoveHtmlTag(descriptionElement.InnerHtml).Trim();
-                }
 
 
 
-                var contents = "";
+                    var contents = "";
 
-                foreach (var contentQuery in crawlPageConfig.Contents)
-                {
-                    var rawContent = document.QuerySelector(contentQuery.Query);
-                    if (contentQuery.Excludes != null && contentQuery.Excludes != "")
+                    foreach (var contentQuery in crawlPageConfig.Contents)
                     {
-                        foreach (var e in contentQuery.Excludes.Split(','))
+                        var rawContent = document.QuerySelector(contentQuery.Query);
+                        if (contentQuery.Excludes != null && contentQuery.Excludes != "")
                         {
-
-                            foreach (var child in rawContent.QuerySelectorAll(e))
+                            foreach (var e in contentQuery.Excludes.Split(','))
                             {
-                                child.Remove();
+
+                                foreach (var child in rawContent.QuerySelectorAll(e))
+                                {
+                                    child.Remove();
+                                }
                             }
                         }
+
+                        contents += rawContent.InnerHtml;
+
                     }
 
-                    contents += rawContent.InnerHtml;
-                    //if (imageUrl == "")
+                    contents = RemoveExtraContent(contents);
+
+
+                    if (description == null || description == "" || description.Length < 100)
+                    {
+                        //description = (contents.Length > 300) ? contents.Substring(0, 500) : contents;
+                        description = TruncateAtWord(RemoveHtmlTag(contents).Replace(title, ""), 200);
+                    }
+
+                    //string imageUrl = "";
+                    //Regex regex = new Regex("<img [^>]*src=\"([^ \"]+)");
+                    //Match match = regex.Match(contents);
+                    //if (match.Success)
                     //{
-                    //    if (rawContent.QuerySelector("img") != null)
-                    //    {
-                    //        imageUrl = rawContent.QuerySelector("img").GetAttribute("src");
-                    //    }
-                    //}
+                    //    var s = match.Value;
+                    //    imageUrl = s.Substring(s.IndexOf("src=\"")+5);
+                    //} 
 
+                    return new CrawlArticle() { Content = contents, Title = title, Description = description };
                 }
-
-                contents = RemoveExtraContent(contents);
-
-
-                if (description == null || description == "" || description.Length < 100)
-                {
-                    //description = (contents.Length > 300) ? contents.Substring(0, 500) : contents;
-                    description = TruncateAtWord(RemoveHtmlTag(contents).Replace(title, ""), 200);
-                }
-
-                //string imageUrl = "";
-                //Regex regex = new Regex("<img [^>]*src=\"([^ \"]+)");
-                //Match match = regex.Match(contents);
-                //if (match.Success)
-                //{
-                //    var s = match.Value;
-                //    imageUrl = s.Substring(s.IndexOf("src=\"")+5);
-                //} 
-
-                return new CrawlArticle() { Content = contents, Title = title, Description = description };
+                
             }
             catch (Exception ex)
             {
-                Console.Write(ex.Message);
+                logger.Trace(ex.StackTrace, "Lỗi DoCrawlSingleUrl({0},crawlPageConfig", url);
+               
             }
-
-
             return null;
-
-
         }
 
 
@@ -372,14 +384,14 @@ namespace Crawl_News_Module
             }
             catch (Exception ex)
             {
-
+                logger.Trace(ex.StackTrace, "Lỗi GetHtmlFromUrl({0})", url);
             }
             finally
             {
                 sr.Dispose();
                 myResponse.Dispose();
             }
-            return "";
+            return null;
         }
     }
 }

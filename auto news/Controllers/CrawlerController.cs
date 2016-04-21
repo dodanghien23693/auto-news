@@ -13,7 +13,6 @@ namespace auto_news.Controllers
         private AutoNewsDbContext _db = new AutoNewsDbContext();
         public ActionResult Index()
         {   
-
             return View("SourcesConfig");
         }
 
@@ -259,8 +258,7 @@ namespace auto_news.Controllers
         {
             return View();
         }
-
-        
+     
         public ActionResult ScheduleJob()
         {
             MvcApplication.AutoNewsServiceInstance.ScheduleJob();

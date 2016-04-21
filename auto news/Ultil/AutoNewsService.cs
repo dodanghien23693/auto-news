@@ -3,6 +3,7 @@ using Config_Model;
 using Crawl_News_Module;
 using Hangfire;
 using Newtonsoft.Json;
+using NLog;
 using System;
 using System.Linq;
 
@@ -12,7 +13,7 @@ namespace auto_news
     {
 
         public static CrawlerService Crawler = new CrawlerService();
-
+        public static Logger logger = LogManager.GetCurrentClassLogger();
         public void ScheduleJob()
         {
             var _db = new AutoNewsDbContext();
@@ -63,7 +64,9 @@ namespace auto_news
                                 minutes = ((string)schedule.Type.StartAt.Split(':')[1]).Trim();
                             };
                         }
-                        catch (Exception ex) { }
+                        catch (Exception ex) {
+                            logger.Error(ex.Message);
+                        }
 
                         if (type == CrawlScheduleType.Daily)
                         {

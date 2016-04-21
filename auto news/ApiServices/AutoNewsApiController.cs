@@ -30,7 +30,7 @@ namespace auto_news.ApiServices
         #region Articles Api
 
         /// <summary>
-        /// get Article by id
+        /// lấy Article dựa vào id
         /// </summary>
         /// <param name="id">Article id to get</param>
         /// <response code="200">successful operation</response>
@@ -45,6 +45,9 @@ namespace auto_news.ApiServices
             else return Ok(a);
         }
 
+        /// <summary>
+        /// Lấy danh sách Article dựa vào các điều kiện lọc
+        /// </summary>
         [Route("articles",Name = "articles")]
         public IHttpActionResult GetArticles([FromUri] ArticleQuery query)
         {
@@ -118,6 +121,9 @@ namespace auto_news.ApiServices
 
         }
 
+        /// <summary>
+        /// Đếm số lượng Article thỏa mãn các điều kiện lọc
+        /// </summary>
         [Route("articles/count")]
         public IHttpActionResult GetCountArticles([FromUri] ArticleQuery query)
         {
@@ -138,6 +144,10 @@ namespace auto_news.ApiServices
         #endregion Articles Api
 
         #region Categories Api
+
+        /// <summary>
+        /// Lấy danh sách toàn bộ Category
+        /// </summary>
         [Route("categories")]
         public IHttpActionResult GetCategories()
         {
@@ -146,6 +156,10 @@ namespace auto_news.ApiServices
             else return Ok(result);
         }
 
+
+        /// <summary>
+        /// Lấy thông tin số lượng Category trong hệ thống
+        /// </summary>
         [Route("categories/count")]
         public IHttpActionResult GetCountCategories()
         {
@@ -153,7 +167,9 @@ namespace auto_news.ApiServices
 
         }
 
-
+        /// <summary>
+        /// Lấy Category thông qua thuộc tính id
+        /// </summary>
         [Route("categories/{id:int}")]
         public IHttpActionResult GetCategoryById(int id)
         {
@@ -162,6 +178,9 @@ namespace auto_news.ApiServices
             else return Ok(result);
         }
 
+        /// <summary>
+        /// Lấy danh sách Article thuộc một Category(dựa vào categoryId) và dựa trên các điều kiện lọc khác
+        /// </summary>
         [Route("categories/{categoryId:int}/articles")]
         public IHttpActionResult GetArticlesByCategory(int categoryId, [FromUri] ArticleQuery query)
         {
@@ -170,6 +189,9 @@ namespace auto_news.ApiServices
             return GetArticles(query);
         }
 
+        /// <summary>
+        /// Đếm số lượng Article thuộc một category(dựa vào categoryId) và các điều kiện lọc khác(nếu có)
+        /// </summary>
         [Route("categories/{categoryId:int}/articles/count")]
         public IHttpActionResult GetCountArticlesByCategory(int categoryId, [FromUri] ArticleQuery query)
         {
@@ -182,6 +204,9 @@ namespace auto_news.ApiServices
 
         #region NewsSources Api
 
+        /// <summary>
+        /// Lấy danh sách các "Nguồn tin"
+        /// </summary>
         [Route("sources")]
         public IHttpActionResult GetSources()
         {
@@ -190,12 +215,18 @@ namespace auto_news.ApiServices
             else return Ok(result);
         }
 
+        /// <summary>
+        /// Lấy số lượng "Nguồn tin" có trong hệ thống
+        /// </summary>
         [Route("sources/count")]
         public IHttpActionResult GetCountSources()
         {
             return Ok(_db.NewsSources.Count());
         }
 
+        /// <summary>
+        /// Lấy "Nguồn tin" thông qua thuộc tính id
+        /// </summary>
         [Route("sources/{id:int}")]
         public IHttpActionResult GetSourceById(int id)
         {
@@ -204,6 +235,9 @@ namespace auto_news.ApiServices
             else return Ok(result);
         }
 
+        /// <summary>
+        /// Lấy danh sách các Article thuộc một "nguồn tin"(dựa vào sourceId) và các điều kiện lọc khác(nếu có)
+        /// </summary>
         [Route("sources/{sourceId:int}/articles")]
         public IHttpActionResult GetArticlesBySource(int sourceId, [FromUri] ArticleQuery query)
         {
@@ -212,6 +246,9 @@ namespace auto_news.ApiServices
             return GetArticles(query);
         }
 
+        /// <summary>
+        /// Lấy số lượng Article thuộc một "nguồn tin"(dựa vào sourceId) và các điều kiện lọc khác(nếu có)
+        /// </summary>
         [Route("sources/{sourceId:int}/articles/count")]
         public IHttpActionResult GetCountArticlesBySource(int sourceId,[FromUri] ArticleQuery query)
         {
@@ -220,6 +257,9 @@ namespace auto_news.ApiServices
             return GetCountArticles(query);
         }
 
+        /// <summary>
+        /// Lấy về danh sách các nguồn tin được lựa chọn bời người dùng hiện tại
+        /// </summary>
         [Authorize]
         [Route("sources/selected")]
         public IHttpActionResult GetSelectedSourcesByCurrentUser()
@@ -242,6 +282,9 @@ namespace auto_news.ApiServices
             return Ok(new { });
         }
 
+        /// <summary>
+        /// Thêm mới nguồn tin vào danh sách nguồn tin yêu thích của người dùng hiện tại
+        /// </summary>
         [Authorize]
         [HttpPost]
         [Route("newsSourceConfig/Add/{sourceId:int}")]
@@ -267,6 +310,9 @@ namespace auto_news.ApiServices
             return NotFound();
         }
 
+        /// <summary>
+        /// Xóa một "nguồn tin"(dựa vào sourceId) khỏi danh sách nguồn tin yêu thích của người dùng hiện tại
+        /// </summary>
         [Authorize]
         [HttpPost]
         [Route("newsSourceConfig/Remove/{sourceId:int}")]

@@ -1,25 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
   <Class Name="Crawl_News_Module.CrawlerService">
-    <Position X="10" Y="1" Width="2.75" />
+    <Position X="11.75" Y="4.25" Width="6.5" />
     <TypeIdentifier>
       <HashCode>gAQAAAAAAAACAAQAAAIAAAABAQEFAAAEAACAAIAQQAA=</HashCode>
       <FileName>Ultil\CrawlerService.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="auto_news.Controllers.CrawlerController">
-    <Position X="3.5" Y="0.5" Width="2.75" />
+    <Position X="8.25" Y="8.75" Width="4.75" />
     <TypeIdentifier>
       <HashCode>AAAAggAEAAICAAAAAACAAIAAQAAAAAAAAAECQCAMCCg=</HashCode>
       <FileName>Controllers\CrawlerController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="auto_news.Controllers.AccountController">
-    <Position X="0.75" Y="0.5" Width="3.5" />
-    <Compartments>
-      <Compartment Name="Fields" Collapsed="true" />
-      <Compartment Name="Properties" Collapsed="true" />
-    </Compartments>
+    <Position X="0.5" Y="1.5" Width="7.5" />
     <NestedTypes>
       <Class Name="auto_news.Controllers.AccountController.ChallengeResult">
         <TypeIdentifier>
@@ -33,17 +29,82 @@
     </TypeIdentifier>
   </Class>
   <Class Name="auto_news.ApiServices.AutoNewsApiController">
-    <Position X="5.75" Y="0.5" Width="3.75" />
+    <Position X="7.5" Y="0.5" Width="3.75" />
     <TypeIdentifier>
       <HashCode>AAAAgIAACAIAEAABIAAEIAAAIVbAAAEAEAAAAIAAAgA=</HashCode>
       <FileName>ApiServices\AutoNewsApiController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="auto_news.ApiServices.CommentRateApiController">
-    <Position X="7.5" Y="0.5" Width="3.5" />
+    <Position X="11.25" Y="0.5" Width="3.5" />
     <TypeIdentifier>
       <HashCode>ABAAgAAIAAAAAAAAAgIAAAAAAEAAAAAAAAAACAAACAA=</HashCode>
       <FileName>ApiServices\CommentRateApiController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Config_Model.CrawlArticle">
+    <Position X="3.25" Y="18.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAgAgAEAAAAAAAAAAAAAAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>Ultil\ConfigModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Config_Model.CrawlConfigJson">
+    <Position X="6.75" Y="16.5" Width="2.75" />
+    <AssociationLine Name="ScheduleConfig" Type="Config_Model.ScheduleConfig">
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="-0.489" Y="1.198" Height="0.182" Width="1.234" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="CrawlPageConfig" Type="Config_Model.CrawlPageConfig">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.266" Y="0.563" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAADAAAAAAACAgAAAAAgAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Ultil\ConfigModel.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ScheduleConfig" />
+      <Property Name="Method" />
+      <Property Name="CrawlPageConfig" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Config_Model.ScheduleConfig">
+    <Position X="6.5" Y="19.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAgAAAQAAAAAAAAA=</HashCode>
+      <FileName>Ultil\ConfigModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Config_Model.CrawlMethod">
+    <Position X="3.25" Y="16.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Ultil\ConfigModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Config_Model.CrawlPageConfig">
+    <Position X="10" Y="18.5" Width="3" />
+    <AssociationLine Name="Contents" Type="Config_Model.ContentQuery">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.896" Y="0.479" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAEAAAAAAAAAAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>Ultil\ConfigModel.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Contents" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Config_Model.ContentQuery">
+    <Position X="10.25" Y="20.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAQA=</HashCode>
+      <FileName>Ultil\ConfigModel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

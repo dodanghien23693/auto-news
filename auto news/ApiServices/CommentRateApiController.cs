@@ -19,6 +19,10 @@ using Microsoft.AspNet.Identity.Owin;
 
 namespace auto_news.ApiServices
 {
+
+    /// <summary>
+    /// Quản lý comments và ratings
+    /// </summary>
     [RoutePrefix("api")]
     [AllowAnonymous]
     public class CommentRateApiController : ApiController
@@ -27,6 +31,9 @@ namespace auto_news.ApiServices
         private AutoNewsDbContext _db = new AutoNewsDbContext();
 
 
+        /// <summary>
+        /// Lấy danh sách các comment của một article(dựa vào articleId)
+        /// </summary>
         [Route("articles/{articleId:int}/comments")]
         [HttpGet]
         public HttpResponseMessage GetCommentsByArticleId(int articleId)
@@ -44,6 +51,9 @@ namespace auto_news.ApiServices
             
         }
 
+        /// <summary>
+        /// Lấy thông tin comment(dựa vào thuộc tính id)
+        /// </summary>
         [Route("comments/{id}")]
         [HttpGet]
         public HttpResponseMessage GetCommentById(int id)
@@ -53,6 +63,9 @@ namespace auto_news.ApiServices
             return Request.CreateResponse(HttpStatusCode.OK, comment);
         }
 
+        /// <summary>
+        /// Tạo mới comment
+        /// </summary>
         [Route("comments")]
         [HttpPost]
         public HttpResponseMessage AddComment(Comment comment)
@@ -71,6 +84,9 @@ namespace auto_news.ApiServices
             }
         }
 
+        /// <summary>
+        /// Cập nhật comment
+        /// </summary>
         [Route("comments/{id:int}")]
         [HttpPut]
         public HttpResponseMessage EditComment(int id,Comment comment)
@@ -89,9 +105,12 @@ namespace auto_news.ApiServices
             }
         }
 
+        /// <summary>
+        /// Xóa comment
+        /// </summary>
         [Route("comments/{id:int}")]
         [HttpDelete]
-        public HttpResponseMessage DeleteComment(int id,Comment comment)
+        public HttpResponseMessage DeleteComment(int id)
         {
             var c = _db.Comments.Find(id);
             if (c != null)
@@ -107,6 +126,9 @@ namespace auto_news.ApiServices
         }
 
 
+        /// <summary>
+        /// Lấy thông tin Rating của article(dựa trên articleId) của người dùng hiện tại
+        /// </summary>
         [Route("articles/{articleId:int}/ratings")]
         [HttpGet]
         public HttpResponseMessage GetRatingByCurrentUser(int articleId)
@@ -129,6 +151,10 @@ namespace auto_news.ApiServices
             }
         }
 
+
+        /// <summary>
+        /// Thêm mới hoặc cập nhật rating cho article(dựa vào articleId) của người dùng hiện tại
+        /// </summary>
         [Authorize]
         [Route("articles/{articleId:int}/ratings")]
         [HttpPost]

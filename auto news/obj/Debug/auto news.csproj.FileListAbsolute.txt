@@ -161,8 +161,6 @@ E:\projects\auto news\auto news\bin\Hangfire.Dashboard.Authorization.dll
 E:\projects\auto news\auto news\bin\Hangfire.Dashboard.Authorization.xml
 E:\projects\auto news\auto news\bin\AngleSharp.dll
 E:\projects\auto news\auto news\bin\AngleSharp.xml
-E:\projects\auto news\auto news\bin\log4net.dll
-E:\projects\auto news\auto news\bin\log4net.xml
 E:\projects\auto news\auto news\bin\FluentValidationNA.dll
 E:\projects\auto news\auto news\bin\System.Linq.Dynamic.dll
 E:\projects\auto news\auto news\bin\FluentValidationNA.xml
@@ -189,4 +187,7 @@ E:\projects\auto news\auto news\bin\React.Web.Mvc4.xml
 E:\projects\auto news\auto news\bin\ru-ru\JavaScriptEngineSwitcher.Core.resources.dll
 E:\projects\auto news\auto news\bin\ru-ru\JavaScriptEngineSwitcher.V8.resources.dll
 E:\projects\auto news\auto news\bin\ru-ru\MsieJavaScriptEngine.resources.dll
-E:\projects\auto news\auto news\obj\Debug\auto news.csprojResolveAssemblyReference.cache
+E:\projects\auto news\auto news\bin\auto news.XML
+E:\projects\auto news\auto news\bin\NLog.config
+E:\projects\auto news\auto news\bin\NLog.dll
+E:\projects\auto news\auto news\bin\NLog.xml
