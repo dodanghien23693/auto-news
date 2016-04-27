@@ -1,13 +1,13 @@
 ﻿
-<div class="container" style="margin-top:60px">
+@*<div class="container" style="margin-top:60px">
     <div class="row col-sm-offset-4">
         <div class="col-sm-6">
             <input type="text" id="search-news-input" class="form-control" placeholder="Nhập từ khóa tìm kiếm" />
         </div>
     </div>
-</div>
-<br />
-<div class="container-fluid">
+</div>*@
+
+<div class="container-fluid" style="margin-top:60px">
     <div class="row">
         <div class="col-sm-2">
             <div class="panel panel-info">
@@ -36,8 +36,11 @@
         </div>
         <div class="col-sm-8" id="news-container">
         </div>
-        <div class="col-sm-2" id="config-region">
-            <div class="panel panel-success">
+
+        <div id="personality-config" style="position:absolute;right: 0px;top: 65px;z-index: 1000;display:none" class="btn btn-default"><span class="glyphicon glyphicon-cog"></span></div>
+
+        <div class="col-sm-2" id="config-region" style="display:none">
+            <div class="panel panel-success" style="margin-right: 10px;">
                 <div class="panel-heading">Cá nhân hóa</div>
                 <div class="panel-body" style="padding:0">
                     <div id="sources-config-region"></div>
@@ -51,9 +54,51 @@
 
 
 @section Scripts{
+<script src="~/Scripts/jquery-ui-1.11.4/jquery-ui.min.js"></script>
 <script>
     window.isLogined = ("@User.Identity.IsAuthenticated" == "True");
 
+    if (window.isLogined){$("#personality-config").show()}
+    $(document).ready(function () {
+
+        jQuery.fn.extend({
+            slideRightShow: function (speed, callback) {
+                return this.each(function () {
+                    $(this).show('slide', { direction: 'right' }, speed, callback);
+                });
+            },
+            slideLeftHide: function (speed, callback) {
+                return this.each(function () {
+                    $(this).hide('slide', { direction: 'left' }, speed, callback);
+                });
+            },
+            slideRightHide: function (speed, callback) {
+                return this.each(function () {
+                    $(this).hide('slide', { direction: 'right' }, speed, callback);
+                });
+            },
+            slideLeftShow: function (speed, callback) {
+                return this.each(function () {
+                    $(this).show('slide', { direction: 'left' }, speed, callback);
+                });
+            }
+        });
+
+
+    
+        var configStatus = 0;
+        $("#personality-config").click(function (e) {
+            if (configStatus == 0) {
+                $("#config-region").slideRightShow(500);
+                configStatus = 1;
+            }
+            else {
+                $("#config-region").slideRightHide(500);
+                configStatus = 0;
+            }
+            
+        })
+    });
 </script>
 
 <script src="~/Scripts/react/react.min.js"></script>

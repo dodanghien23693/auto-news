@@ -1,6 +1,8 @@
 ﻿using auto_news.Models;
+using auto_news.Ultil;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
@@ -265,5 +267,9 @@ namespace auto_news.Controllers
             return Json(new { status = "Ok" }, JsonRequestBehavior.AllowGet);   
         }
 
+        
+
     }
+
+
 }

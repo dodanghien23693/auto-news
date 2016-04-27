@@ -16,6 +16,8 @@ using System.Linq.Dynamic;
 using Microsoft.AspNet.Identity;
 using System.Threading;
 using Microsoft.AspNet.Identity.Owin;
+using Config_Model;
+using auto_news.Ultil;
 
 namespace auto_news.ApiServices
 {
@@ -25,7 +27,7 @@ namespace auto_news.ApiServices
     {
 
         private AutoNewsDbContext _db = new AutoNewsDbContext();
-       
+
 
         #region Articles Api
 
@@ -48,7 +50,7 @@ namespace auto_news.ApiServices
         /// <summary>
         /// Lấy danh sách Article dựa vào các điều kiện lọc
         /// </summary>
-        [Route("articles",Name = "articles")]
+        [Route("articles", Name = "articles")]
         public IHttpActionResult GetArticles([FromUri] ArticleQuery query)
         {
 
@@ -56,12 +58,12 @@ namespace auto_news.ApiServices
             if (query == null) query = new ArticleQuery();
 
             IQueryable<Article> articles;
-            
+
 
             articles = GetFilteredArticles(query);
-            
-            
-            
+
+
+
             if (query.order == "desc")
             {
                 articles = articles.OrderBy(query.sortBy + " descending");
@@ -70,12 +72,12 @@ namespace auto_news.ApiServices
             else
             {
                 articles = articles.OrderBy(query.sortBy);
-                
+
             }
 
             if (query.searchString != null)
             {
-                articles = articles.Where(i => i.Title.ToLower().Contains(query.searchString.ToLower()));                
+                articles = articles.Where(i => i.Title.ToLower().Contains(query.searchString.ToLower()));
             }
 
             if (query.ids != null)
@@ -84,8 +86,8 @@ namespace auto_news.ApiServices
                 articles = from a in articles where listId.Contains(a.Id) select a;
 
             }
-            
-            
+
+
             if (User.Identity.IsAuthenticated)
             {
                 var userId = User.Identity.GetUserId();
@@ -106,7 +108,7 @@ namespace auto_news.ApiServices
                 //}
             }
 
-            articles = articles.Skip(query.limit * (query.page-1)).Take(query.limit);
+            articles = articles.Skip(query.limit * (query.page - 1)).Take(query.limit);
 
             if (query.fields != null)
             {
@@ -139,6 +141,46 @@ namespace auto_news.ApiServices
 
             return Ok(articles.Count());
 
+        }
+
+        [HttpGet]
+        [Route("articles/{articleId:int}/relatedArticles")]
+        public IHttpActionResult RelatedArticle(int articleId)
+        {
+            try
+            {
+                var article = _db.Articles.Find(articleId);
+                var result = new RelatedListJson();
+                result.Title = article.Title;
+                result.Link = article.OriginUrl;
+                if (article != null)
+                {
+
+                    var listArticle = _db.Articles.Where(i => i.CategoryId == article.CategoryId).Where(i => i.Id != articleId).Select(i => new { i.Id, i.Description, i.Title, i.CategoryId, i.OriginUrl, i.ImageUrl }).Take(500).ToList();
+                    //result.Similarities = new List<dynamic>();
+                    foreach (var a in listArticle)
+                    {
+                        result.Similarities.Add(new SimilarityJson() { ArticleId = a.Id, Link = a.OriginUrl, Title = a.Title, Similarity = CosineSimilarityMeasure.CaculateCosinSimilarity(a.Title + a.Description, article.Title + article.Description) });
+
+                    }
+
+                    result.Similarities = result.Similarities.Where(i => i.Similarity >= 0.2).OrderByDescending(i => i.Similarity).Take(5).ToList();
+                    List<dynamic> relatedArticles = new List<dynamic>();
+                    foreach (var a in result.Similarities)
+                    {
+                        var item = listArticle.Where(i => i.Id == a.ArticleId).FirstOrDefault();
+                        if (item != null) relatedArticles.Add(item);
+                    }
+                    return Ok(relatedArticles);
+                }
+               
+
+            }
+            catch (Exception ex)
+            {
+                    return InternalServerError();
+            }
+            return null;
         }
 
         #endregion Articles Api
@@ -250,7 +292,7 @@ namespace auto_news.ApiServices
         /// Lấy số lượng Article thuộc một "nguồn tin"(dựa vào sourceId) và các điều kiện lọc khác(nếu có)
         /// </summary>
         [Route("sources/{sourceId:int}/articles/count")]
-        public IHttpActionResult GetCountArticlesBySource(int sourceId,[FromUri] ArticleQuery query)
+        public IHttpActionResult GetCountArticlesBySource(int sourceId, [FromUri] ArticleQuery query)
         {
             if (query == null) query = new ArticleQuery();
             query.sourceId = sourceId;
@@ -277,8 +319,8 @@ namespace auto_news.ApiServices
                 int[] ids = sources.Sources.Select(i => i.SourceId).ToArray();
                 return Ok(_db.NewsSources.Where(i => ids.Contains(i.Id)).ToList());
             }
-            
-            
+
+
             return Ok(new { });
         }
 
@@ -332,7 +374,7 @@ namespace auto_news.ApiServices
                         config.ObjectConfig = JsonConvert.SerializeObject(sources);
                         _db.SaveChanges();
                         return Ok();
-                    }   
+                    }
                 }
             }
             return NotFound();
@@ -408,7 +450,7 @@ namespace auto_news.ApiServices
             return articles;
         }
 
-        
+
         public static object GetFilteredObject(string[] fields)
         {
             dynamic result = new ExpandoObject();
@@ -420,13 +462,13 @@ namespace auto_news.ApiServices
             return result;
         }
 
-        public static object GetFilteredArticle(Article a,string[] fields)
+        public static object GetFilteredArticle(Article a, string[] fields)
         {
-            dynamic result  = new ExpandoObject();
+            dynamic result = new ExpandoObject();
             var article = result as IDictionary<String, object>;
-            foreach(var f in fields)
+            foreach (var f in fields)
             {
-                var field = Char.ToUpper(f[0]) + f.Substring(1,f.Length-1);
+                var field = Char.ToUpper(f[0]) + f.Substring(1, f.Length - 1);
                 var prop = typeof(Article).GetProperty(field);
                 if (prop != null)
                 {

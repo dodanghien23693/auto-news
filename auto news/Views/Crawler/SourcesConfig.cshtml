@@ -3,7 +3,10 @@
 
 
 
-<div class="btn btn-info"><a style="color:white" href="/Crawler/PageCrawlConfig?type=add" target="_blank">Add Crawl Config</a></div>
+<div class="btn btn-info">
+    <a style="color:white" href="/Crawler/PageCrawlConfig?type=add" target="_blank">
+    Thêm cấu hình Crawl</a>
+    </div>
   <br /><br />
 
 <div id="NewsSourceTable" style="width: 100%; margin: auto;"></div>
@@ -19,7 +22,7 @@
         $(document).ready(function () {
             
             $('#NewsSourceTable').jtable({
-                title: 'News Source',
+                title: 'Danh sách nguồn tin',
                 actions: {
                     listAction: '/Crawler/GetAllNewsSource',
                     createAction: '/Crawler/CreateNewsSource',
@@ -31,15 +34,14 @@
                     Id: {
                         title:"Id",
                         key: true,
-
                     },
-                    CrawlConfigs: {
+                    CrawlConfig: {
                         create: false,
                         edit: false,
-                        title:'Crawl Configs',
+                        title:'Nguồn tin',
                         width: "20%",
                         display: function(sourceData){
-                            var $img = $('<img width="30px" src="https://cdn0.iconfinder.com/data/icons/gray-business-toolbar/512/repair-3-512.png" title="Edit Crawl Configs" />');
+                            var $img = $('<span><img width="30px" src="https://cdn0.iconfinder.com/data/icons/gray-business-toolbar/512/repair-3-512.png" title="Edit Crawl Configs" />' + sourceData.record.Name+'</span>');
                             $img.click(function(){
                                 $('#NewsSourceTable').jtable('openChildTable',
                                     $img.closest('tr'),
@@ -61,15 +63,15 @@
                                                 key:true
                                             },
                                             IsScheduled:{
-                                                title: 'Is Scheduled',
+                                                title: 'Đã được lập lịch?',
                                                 type: 'checkbox',
                                                 values: { 'false': 'False', 'true': 'True' },
                                                 defaultValue:'false'
                                             },
                                             Description:{
-                                                title: 'Description',
+                                                title: 'Mô tả',
                                                 display: function (crawlConfig) {
-                                                    var $action = $('<a href="/Crawler/PageCrawlConfig?type=update&id='+crawlConfig.record.Id+'" target="_blank">Edit Description</a>');
+                                                    var $action = $('<a href="/Crawler/PageCrawlConfig?type=update&id='+crawlConfig.record.Id+'" target="_blank">Chỉnh sửa cấu hình</a>');
                                                     
                                                     return $action;
                                                 }
@@ -84,12 +86,13 @@
                         }
                     },
                     Name: {
-                        title: 'Name',
-                        width: '30%'
+                        title: 'Tên',
+                        width: '30%',
+                        list: false
                     },
 
                     Description: {
-                        title: 'Description',
+                        title: 'Mô tả',
                         width: '30%'
                     }
                     

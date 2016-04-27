@@ -22,12 +22,61 @@
   </PropertyGroup>
   <Import Project="$(VSToolsPath)\ArchitectureTools\Microsoft.VisualStudio.TeamArchitect.ModelingProject.targets" Condition="'$(VSToolsPath)' != ''" />
   <ItemGroup>
+    <Content Include="Bình luận bài viết.sequencediagram">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Bình luận bài viết.sequencediagram.layout">
+      <SubType>Content</SubType>
+      <DependentUpon>Bình luận bài viết.sequencediagram</DependentUpon>
+    </Content>
+    <Content Include="Cấu hình Crawl trang tin.sequencediagram">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Cấu hình Crawl trang tin.sequencediagram.layout">
+      <SubType>Content</SubType>
+      <DependentUpon>Cấu hình Crawl trang tin.sequencediagram</DependentUpon>
+    </Content>
+    <Content Include="Gửi request.sequencediagram">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Gửi request.sequencediagram.layout">
+      <SubType>Content</SubType>
+      <DependentUpon>Gửi request.sequencediagram</DependentUpon>
+    </Content>
+    <Content Include="Login.sequencediagram">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Login.sequencediagram.layout">
+      <SubType>Content</SubType>
+      <DependentUpon>Login.sequencediagram</DependentUpon>
+    </Content>
+    <Content Include="Lập lịch.sequencediagram">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Lập lịch.sequencediagram.layout">
+      <SubType>Content</SubType>
+      <DependentUpon>Lập lịch.sequencediagram</DependentUpon>
+    </Content>
+    <Content Include="Tìm kiếm bài viết.sequencediagram">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Tìm kiếm bài viết.sequencediagram.layout">
+      <SubType>Content</SubType>
+      <DependentUpon>Tìm kiếm bài viết.sequencediagram</DependentUpon>
+    </Content>
     <Content Include="UMLSequenceDiagram1.sequencediagram">
       <SubType>Content</SubType>
     </Content>
     <Content Include="UMLSequenceDiagram1.sequencediagram.layout">
       <SubType>Content</SubType>
       <DependentUpon>UMLSequenceDiagram1.sequencediagram</DependentUpon>
+    </Content>
+    <Content Include="UMLSequenceDiagram2.sequencediagram">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="UMLSequenceDiagram2.sequencediagram.layout">
+      <SubType>Content</SubType>
+      <DependentUpon>UMLSequenceDiagram2.sequencediagram</DependentUpon>
     </Content>
     <Folder Include="ModelDefinition\" />
     <Content Include="ModelDefinition\ModelingProject1.uml">

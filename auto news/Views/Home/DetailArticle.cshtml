@@ -16,11 +16,24 @@
                         <h3>@Model.Title</h3>
                     </div>
                     <hr />
-                    <div id="Content" style="font-size: 18px;">
+                    <div id="AutoNews-Content" style="font-size: 18px;">
                         @Html.Raw(Model.RawContent)
                     </div>
                 </div>
                 <hr />
+                <section id="section-related-articles" style="display:none">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Có thể bạn quan tâm!
+                        </div>
+                        <div class="panel-body">
+                            <ul id="related-articles">
+
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
                 <span id="rating" style="display:inline-block"></span>
                 <span class="fb-like" data-href="/detailarticle/@Model.Id" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></span>
                 <br /><br />
@@ -66,6 +79,38 @@
 <script src="~/Scripts/rateyo v2.0.1/jquery.rateyo.min.js"></script>
     
     <script>
+
+        $("#AutoNews-Content img").each(function(index,e){
+            $(e).addClass("img-responsive");
+            $(e).attr("style","margin: 0 auto;");
+        });
+        function GetRelatedArticle(id){
+            $.ajax({
+                type: 'get',
+                url: '/api/articles/'+id+'/relatedArticles',
+                success: function (data) {
+                    if(data.length>0){
+                        ShowRelatedArticle(data);     
+                    }
+                                   
+                },
+                error: function(e){
+
+                }
+            });
+        }
+
+        function ShowRelatedArticle(articles){
+
+            $("#section-related-articles").show(500);
+            for(var i=0;i<articles.length;i++){
+                var a = articles[i];
+                $("#related-articles").append("<li style='list-style: none;'><a href='"+a.originUrl+"'>"+a.title+"</a></li>");
+            }
+            
+        }
+
+        window.setTimeout(GetRelatedArticle(@Model.Id),3000);
 
         function timeSince(timeStamp) {
             var now = new Date(),

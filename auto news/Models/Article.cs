@@ -13,7 +13,7 @@ namespace auto_news.Models
 
         public int NewsSourceId { get; set; }
 
-        public DateTime? CreateTime { get; set; }
+        public DateTime CreateTime { get; set; }
 
         [StringLength(300)]
         public string Title { get; set; }

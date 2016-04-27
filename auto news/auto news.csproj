@@ -326,6 +326,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="Ultil\AutoNewsService.cs" />
     <Compile Include="Ultil\ConfigModel.cs" />
+    <Compile Include="Ultil\CosineSimilarityMeasure.cs" />
     <Compile Include="Ultil\CrawlerService.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -578,7 +579,6 @@
     <Content Include="Views\Account\SendCode.cshtml" />
     <Content Include="Views\Account\VerifyCode.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
-    <Content Include="Views\Home\_Home.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Manage\AddPhoneNumber.cshtml" />
     <Content Include="Views\Manage\ChangePassword.cshtml" />
@@ -608,7 +608,6 @@
     <Content Include="Views\Crawler\_Layout.cshtml" />
     <Content Include="Views\Crawler\_CrawlerMenu.cshtml" />
     <Content Include="Views\Crawler\SchedulesConfig.cshtml" />
-    <Content Include="Content\json\sources.json" />
     <Content Include="Views\Crawler\PageCrawlConfig.cshtml" />
     <Content Include="Scripts\jtable.2.4.0\themes\basic\jtable_basic.less" />
     <Content Include="Scripts\jtable.2.4.0\themes\jqueryui\jtable_jqueryui.less" />

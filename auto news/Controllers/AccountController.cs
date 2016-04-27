@@ -91,7 +91,14 @@ namespace auto_news.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectPermanent(returnUrl);
+                    if (returnUrl != null && returnUrl.Trim() != "")
+                    {
+                        return RedirectPermanent(returnUrl);
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
@@ -345,7 +352,14 @@ namespace auto_news.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectPermanent(returnUrl);
+                    if (returnUrl != null && returnUrl.Trim() != "")
+                    {
+                        return RedirectPermanent(returnUrl);
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
@@ -387,7 +401,15 @@ namespace auto_news.Controllers
                     if (result.Succeeded)
                     {
                         await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                        return RedirectPermanent(returnUrl);
+                        if (returnUrl != null && returnUrl.Trim() != "")
+                        {
+                            return RedirectPermanent(returnUrl);
+                        }
+                        else
+                        {
+                            return RedirectToAction("Index", "Home");
+                        }
+                       
                     }
                 }
                 AddErrors(result);
@@ -401,6 +423,7 @@ namespace auto_news.Controllers
         // POST: /Account/LogOff
         [HttpPost]
         [ValidateAntiForgeryToken]
+        
         public ActionResult LogOff(string returnUrl)
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
@@ -464,11 +487,14 @@ namespace auto_news.Controllers
 
         private ActionResult RedirectToLocal(string returnUrl)
         {
-            if (Url.IsLocalUrl(returnUrl))
+            if (returnUrl != null && returnUrl.Trim() != "")
             {
-                return Redirect(returnUrl);
+                return RedirectPermanent(returnUrl);
             }
-            return RedirectToAction("Index", "Home");
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult

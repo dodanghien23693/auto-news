@@ -93,4 +93,23 @@ namespace Config_Model
         public const int Yearly = 6;
     }
 
+
+    public class RelatedListJson
+    {
+        public string Title { get; set; }
+        public string Link { get; set; }
+        public List<SimilarityJson> Similarities { get; set; }
+        public RelatedListJson()
+        {
+            Similarities = new List<SimilarityJson>();
+        }
+    }
+
+    public class SimilarityJson
+    {
+        public int ArticleId { get; set; }
+        public string Title { get; set; }
+        public double Similarity { get; set; }
+        public string Link { get; set; }
+    }
 }

@@ -191,3 +191,4 @@ E:\projects\auto news\auto news\bin\auto news.XML
 E:\projects\auto news\auto news\bin\NLog.config
 E:\projects\auto news\auto news\bin\NLog.dll
 E:\projects\auto news\auto news\bin\NLog.xml
+E:\projects\auto news\auto news\obj\Debug\auto news.csprojResolveAssemblyReference.cache

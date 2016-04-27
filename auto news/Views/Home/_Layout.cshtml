@@ -12,22 +12,25 @@
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Auto news", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, null)</li>
-                    <li>@Html.ActionLink("Crawler", "Index", "Crawler", new { area = "" }, null)</li>
-                    <li>@Html.ActionLink("API", "Index", "Help", new { area = "HelpPage" }, null)</li>
-                </ul>
+            <div class="row">
+                <div class="navbar-header col-sm-3">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    @Html.ActionLink("Auto news", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav col-sm-6">
+                        <li style="margin-top:7px;width:100%">
+                        <input style="width:100%" type="text" id="search-news-input" class="form-control" placeholder="Nhập từ khóa tìm kiếm" /></li>
 
-                @Html.Partial("_LoginPartial")
+                    </ul>
+                    <div class="col-sm-3">
+                        @Html.Partial("_LoginPartial")
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -35,9 +38,14 @@
         @RenderBody()
 
     </div>
+    <div class="container">
 
-    @*<script src="https://fb.me/react-15.0.1.min.js"></script>
-    <script src="https://fb.me/react-dom-15.0.1.min.js"></script>*@
+        <footer class="footer">
+            <hr />
+            <p>&copy; @DateTime.Now.Year - Auto News</p>
+        </footer>
+    </div>
+
 
     @Scripts.Render("~/bundles/jquery")
 

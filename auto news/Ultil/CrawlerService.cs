@@ -66,6 +66,7 @@ namespace Crawl_News_Module
 
                 var i = 0;
 
+
                 while (i < links.Count)
                 {
                     var HasNewArticle = true;
@@ -83,6 +84,7 @@ namespace Crawl_News_Module
                         }
                         else
                         {
+                           
                             var article = DoCrawlSingleUrl(link.Url, configObject.CrawlPageConfig);
 
                             if (article != null)
@@ -94,14 +96,32 @@ namespace Crawl_News_Module
                                 }
                                 AddArticle(article, configObject, link);
                             }
+                            
+                            
                         }
                         j++;
                     }
                     i++;
+
+                    RemoveDuplicateArticle(configObject.NewsSourceId);
                 }
             }
         }
 
+        public void RemoveDuplicateArticle(int sourceId)
+        {
+            var dup = AutoNewsDb.Articles.Where(i => i.NewsSourceId == sourceId).Take(200).GroupBy(i => i.OriginUrl).Where(i => i.Count() > 1);
+            foreach(var g in dup)
+            {
+                var list = g.ToList();
+                for(var i = 1; i < list.Count;i++)
+                {
+                    AutoNewsDb.Articles.Remove(list[i]);
+                }
+                
+            }
+            AutoNewsDb.SaveChanges();
+        }
         private string GetFirstImageUrl(string content)
         {
             string imageUrl = "";
@@ -115,6 +135,7 @@ namespace Crawl_News_Module
             return imageUrl;
         }
 
+        
         public int AddArticle(CrawlArticle article, CrawlConfigJson config, LinkConfig link)
         {
             try
@@ -139,7 +160,7 @@ namespace Crawl_News_Module
             }
             catch (Exception ex)
             {
-                logger.Trace(ex.StackTrace,"Lỗi thêm CrawlArticle:{0}", article);
+                logger.Trace(ex.StackTrace,"loi them CrawlArticle:{0}", article);
             }
             return 0;
 
@@ -148,16 +169,15 @@ namespace Crawl_News_Module
         {
             try
             {
-                if (AutoNewsDb.Articles.Where(a => a.NewsSourceId == configObject.NewsSourceId).Where(a => a.OriginUrl.Equals(url.Trim())).FirstOrDefault() == null) return false;
+                if (AutoNewsDb.Articles.Where(a => a.NewsSourceId == configObject.NewsSourceId).Where(a => a.OriginUrl.ToLower().Equals(url.ToLower())).Count()==0) return false;
                 else return true;
             }
             catch(Exception ex)
             {
-                logger.Trace(ex, "Lỗi khi thực hiện IsCrawled({0},configObject)", url);
+                logger.Trace(ex, "loi khi thuc hien IsCrawled({0},configObject)", url);
                 throw;         
             }
-            
-            
+
         }
 
         public List<LinkConfig> CrawlLinkFromUrl(string url, CrawlLinkConfig crawlLinkConfig, int categoryId)
